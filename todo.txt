@@ -1,0 +1,7 @@
+1. build log in view controller and can log in using Udacity account
+2. Use apple map and can get studentLocation info from Parse and display info on the map.
+3. Display studntLocation info in list
+4. add pin on the map
+5. edit/overwrite pin on the map
+6. tab info to redirect to the link provided
+
