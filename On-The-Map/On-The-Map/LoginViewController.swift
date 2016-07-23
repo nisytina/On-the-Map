@@ -124,19 +124,36 @@ class LoginViewController: UIViewController {
                 self.appDelegate.userID = account[UdacityJSONResponseKeys.UserID] as? String
                 
             }
-            
             print(self.appDelegate.sessionID)
             print(self.appDelegate.userID)
             
             // load map view
-            
-
+            performUIUpdatesOnMain{
+                self.performSegueWithIdentifier("Map", sender: self)
+            }
         }
         task.resume()
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "Map" {
+            
+            let barViewControllers = segue.destinationViewController as! UITabBarController
+            let nav = barViewControllers.viewControllers![0] as! UINavigationController
+            let destinationViewController = nav.topViewController as! MapViewController
+            
+//            let controller = segue.destinationViewController as!
+//            MapViewController
+            destinationViewController.message = "segue"
+            
+        }
+        
     }
 
-
 }
+
+
 
 //extension LoginViewController: UITextFieldDelegate {
 //    

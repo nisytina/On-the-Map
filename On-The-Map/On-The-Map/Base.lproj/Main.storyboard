@@ -120,11 +120,119 @@
                         <outlet property="PasswordTextfield" destination="e4P-tE-AiX" id="uhP-OU-s6h"/>
                         <outlet property="SignUp" destination="TLx-xw-AKS" id="IKS-1Z-hsk"/>
                         <outlet property="errorMessage" destination="e4K-G1-sfq" id="nX6-nz-Qee"/>
+                        <segue destination="cJN-gl-RUs" kind="show" identifier="Map" id="f29-of-6RT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="225" y="339"/>
+            <point key="canvasLocation" x="260" y="339"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="9rH-pE-DTX">
+            <objects>
+                <tabBarController id="cJN-gl-RUs" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="fhw-rT-fih">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="GCZ-2S-qHy" kind="relationship" relationship="viewControllers" id="Vhp-x7-X8m"/>
+                        <segue destination="Wr0-uY-V7I" kind="relationship" relationship="viewControllers" id="MLf-b8-jp5"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s36-0u-dPV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="846" y="339"/>
+        </scene>
+        <!--map-->
+        <scene sceneID="F8G-a6-nhA">
+            <objects>
+                <navigationController title="map" id="Wr0-uY-V7I" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="contacts" id="CC2-Sp-RjY"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0TG-Bf-uGc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="8Oj-hO-4ZE">
+                        <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="2dn-ba-Hrv" kind="relationship" relationship="rootViewController" id="uio-Wa-Ymx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wUI-CH-ajV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1582" y="762"/>
+        </scene>
+        <!--On The Map-->
+        <scene sceneID="seS-6S-UkK">
+            <objects>
+                <viewController id="2dn-ba-Hrv" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lIA-HM-cyO"/>
+                        <viewControllerLayoutGuide type="bottom" id="fkW-DR-Ynw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JEe-WL-ak8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="On The Map" id="11w-B6-EVb"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ylF-M8-X6L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2410" y="762"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="h1r-FJ-Wsu">
+            <objects>
+                <navigationController id="GCZ-2S-qHy" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="HsE-5p-XiB"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xRh-Zy-UgL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2MV-AC-5dl" kind="relationship" relationship="rootViewController" id="Mgr-XV-qTc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pg9-YJ-9nl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1574" y="-262"/>
+        </scene>
+        <!--map-->
+        <scene sceneID="Gux-n0-ap4">
+            <objects>
+                <viewController storyboardIdentifier="MapViewController" title="map" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2MV-AC-5dl" customClass="MapViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jTh-Ro-kWA"/>
+                        <viewControllerLayoutGuide type="bottom" id="pCd-mn-dSP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tqw-U6-14g">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="nVD-Mv-fQ0">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="On The Map" id="OfP-gX-KDF"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="mapView" destination="nVD-Mv-fQ0" id="D6B-hF-nZH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bVB-1w-Xgr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2402" y="-270"/>
         </scene>
     </scenes>
     <resources>

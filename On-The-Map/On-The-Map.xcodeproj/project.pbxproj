@@ -14,6 +14,7 @@
 		E61348E81D42753800CCA6E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E61348E61D42753800CCA6E5 /* LaunchScreen.storyboard */; };
 		E61348F31D42753800CCA6E5 /* On_The_MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61348F21D42753800CCA6E5 /* On_The_MapTests.swift */; };
 		E61348FE1D42753800CCA6E5 /* On_The_MapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61348FD1D42753800CCA6E5 /* On_The_MapUITests.swift */; };
+		E68195311D43B3B4006224A7 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68195301D43B3B4006224A7 /* MapViewController.swift */; };
 		E6BFE4A31D429672000D1FBA /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BFE4A21D429672000D1FBA /* GCDBlackBox.swift */; };
 		E6BFE4AA1D42A290000D1FBA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BFE4A91D42A290000D1FBA /* Constants.swift */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 		E61348F91D42753800CCA6E5 /* On-The-MapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "On-The-MapUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E61348FD1D42753800CCA6E5 /* On_The_MapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = On_The_MapUITests.swift; sourceTree = "<group>"; };
 		E61348FF1D42753800CCA6E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E68195301D43B3B4006224A7 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		E6BFE4A21D429672000D1FBA /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GCDBlackBox.swift; path = "../../../proj3/ios-nd-networking-master/MyFavoriteMoviesComplete/MyFavoriteMovies/GCDBlackBox.swift"; sourceTree = "<group>"; };
 		E6BFE4A91D42A290000D1FBA /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				E61348DF1D42753800CCA6E5 /* LoginViewController.swift */,
+				E68195301D43B3B4006224A7 /* MapViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				E61348E01D42753800CCA6E5 /* LoginViewController.swift in Sources */,
 				E6BFE4A31D429672000D1FBA /* GCDBlackBox.swift in Sources */,
 				E61348DE1D42753800CCA6E5 /* AppDelegate.swift in Sources */,
+				E68195311D43B3B4006224A7 /* MapViewController.swift in Sources */,
 				E6BFE4AA1D42A290000D1FBA /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
