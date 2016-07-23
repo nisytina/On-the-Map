@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -19,26 +20,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="EmailTextfield" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jWu-6H-U6R">
-                                <rect key="frame" x="13" y="231" width="387" height="43"/>
-                                <color key="backgroundColor" red="1" green="0.84595767985034176" blue="0.6910858880777635" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="jWu-6H-U6R" secondAttribute="height" multiplier="380:43" constant="7" id="72d-d1-QaQ"/>
-                                </constraints>
-                                <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PasswordTextfield" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e4P-tE-AiX">
-                                <rect key="frame" x="13" y="292" width="387" height="42"/>
-                                <color key="backgroundColor" red="0.99607843137254903" green="0.81568627450980391" blue="0.62745098039215685" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="e4P-tE-AiX" secondAttribute="height" multiplier="190:21" constant="7" id="jGX-lF-ma8"/>
-                                </constraints>
-                                <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZQV-hy-IRg">
                                 <rect key="frame" x="13" y="353" width="387" height="42"/>
                                 <color key="backgroundColor" red="0.80576923076923079" green="0.40529061889343648" blue="0.0022879649915491054" alpha="1" colorSpace="calibratedRGB"/>
@@ -81,6 +62,26 @@
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="EmailTextfield" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jWu-6H-U6R">
+                                <rect key="frame" x="13" y="231" width="387" height="43"/>
+                                <color key="backgroundColor" red="1" green="0.84595767985034176" blue="0.6910858880777635" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="jWu-6H-U6R" secondAttribute="height" multiplier="380:43" constant="7" id="72d-d1-QaQ"/>
+                                </constraints>
+                                <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PasswordTextfield" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e4P-tE-AiX">
+                                <rect key="frame" x="13" y="292" width="387" height="42"/>
+                                <color key="backgroundColor" red="0.99607843137254903" green="0.81568627450980391" blue="0.62745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="e4P-tE-AiX" secondAttribute="height" multiplier="190:21" constant="7" id="jGX-lF-ma8"/>
+                                </constraints>
+                                <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.57595850197487564" blue="0.10719186232301692" alpha="0.92297952586206899" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -181,12 +182,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="On The Map" id="11w-B6-EVb"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="On The Map" id="11w-B6-EVb">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="97Q-5I-kph"/>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="refresh" id="5t9-ya-SuL"/>
+                            <barButtonItem image="addNew" id="FoS-50-p1z"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylF-M8-X6L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2410" y="762"/>
+            <point key="canvasLocation" x="2402" y="772"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="h1r-FJ-Wsu">
@@ -224,9 +233,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="On The Map" id="OfP-gX-KDF"/>
+                    <navigationItem key="navigationItem" title="On The Map" id="OfP-gX-KDF">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="AfV-Yc-jy5">
+                            <connections>
+                                <action selector="logout" destination="2MV-AC-5dl" id="Av0-a6-ysZ"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="refresh" id="ppi-bE-I6f"/>
+                            <barButtonItem image="addNew" id="1Ej-J8-OJB"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
+                        <outlet property="logOut" destination="AfV-Yc-jy5" id="Hjb-7G-9WD"/>
                         <outlet property="mapView" destination="nVD-Mv-fQ0" id="D6B-hF-nZH"/>
                     </connections>
                 </viewController>
@@ -237,5 +257,6 @@
     </scenes>
     <resources>
         <image name="Login" width="256" height="256"/>
+        <image name="addNew" width="32" height="32"/>
     </resources>
 </document>

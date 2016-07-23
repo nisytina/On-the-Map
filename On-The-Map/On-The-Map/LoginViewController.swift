@@ -32,7 +32,6 @@ class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
         unsubscribeFromAllNotifications()
     }
-
     
     @IBAction func login() {
         
@@ -142,11 +141,7 @@ class LoginViewController: UIViewController {
             let barViewControllers = segue.destinationViewController as! UITabBarController
             let nav = barViewControllers.viewControllers![0] as! UINavigationController
             let destinationViewController = nav.topViewController as! MapViewController
-            
-//            let controller = segue.destinationViewController as!
-//            MapViewController
             destinationViewController.message = "segue"
-            
         }
         
     }
