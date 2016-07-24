@@ -14,11 +14,6 @@ struct UdacityMethods {
     
 }
 
-//// MARK: URL Keys
-//struct URLKeys {
-//    static let UserID = "key"
-//}
-
 // MARK: Parameter Keys
 struct UdacityParameterKeys {
     

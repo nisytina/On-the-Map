@@ -9,24 +9,113 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, MKMapViewDelegate {
     
     var appDelegate: AppDelegate!
+    let session = NSURLSession.sharedSession()
     var message: String! = nil
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var logOut: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.mapView.delegate = self;
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         print(message)
+        getStudentLocations()
+    }
+    
+//    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+//        if (annotation is MKUserLocation) {
+//            return nil
+//        }
+//        
+//        if (annotation.isKindOfClass(CustomAnnotation)) {
+//            let customAnnotation = annotation as? CustomAnnotation
+//            mapView.translatesAutoresizingMaskIntoConstraints = false
+//            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("CustomAnnotation") as MKAnnotationView!
+//            
+//            if (annotationView == nil) {
+//                annotationView = customAnnotation?.annotationView()
+//            } else {
+//                annotationView.annotation = annotation;
+//            }
+//            
+//            self.addBounceAnimationToView(annotationView)
+//            return annotationView
+//        } else {
+//            return nil
+//        }
+//    }
+    
+    
+    
+    func getStudentLocations() {
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: ParseClient.ParseMethods.studentLocation)!)
+        request.addValue(ParseClient.ParseAPIValue.Parse_Application_ID, forHTTPHeaderField: ParseClient.ParseAPIKey.Parse_Application_ID)
+        request.addValue(ParseClient.ParseAPIValue.REST_API_Key, forHTTPHeaderField: ParseClient.ParseAPIKey.REST_API_Key)
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                print("There was an error with your request: \(error)")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                print("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                print("No data was returned by the request!")
+                return
+            }
+//          print(NSString(data: data, encoding: NSUTF8StringEncoding))
+            
+            /* 5A. Parse the data */
+            let parsedResult: AnyObject!
+            do {
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            } catch {
+                print("Could not parse the data as JSON: '\(data)'")
+                return
+            }
+            
+            //6. use data
+            if let results = parsedResult[ParseClient.JSONResponseKeys.result] as? [[String : AnyObject]] {
+                
+                let locations = studentLocation.locationsFromResults(results)
+                //display locations on the map
+                self.displayStudentLocations(locations)
+//                print(locations)
+
+            } else {
+                
+                print("can't parse location info")
+            }
+        }
+        task.resume()
+        
+    }
+    
+    func displayStudentLocations(results: [studentLocation]) {
+        
+        for result in results {
+            let location = CLLocationCoordinate2DMake(result.latitude, result.longitude)
+            let dropPin = MKPointAnnotation()
+            dropPin.coordinate = location
+            dropPin.title = result.firstName + " " + result.lastName
+            dropPin.subtitle = result.mediaURL
+            mapView.addAnnotation(dropPin)
+        }
+        
     }
     
     @IBAction func logout() {
-        
         deleteSession()
-        print("poped")
-        
     }
     
     func deleteSession() {
@@ -76,22 +165,17 @@ class MapViewController: UIViewController {
             if let _ = parsedResult[UdacityJSONResponseKeys.StatusCode] as? Int {
                 performUIUpdatesOnMain {
                     if let error = parsedResult[UdacityJSONResponseKeys.StatusMessage]! {
-//                        self.errorMessage.text =
-//                            error as? String
                         print(error)
                     }
-                    
                 }
                 return
             }
             
             /* GUARD: Is the session created sucessfully?  */
             guard let session = parsedResult[UdacityJSONResponseKeys.Session] as? [String:String] else {
-                print("Cannot create new session")
+                print("Cannot get session id")
                 return
             }
-            
-            
             
             if session[UdacityJSONResponseKeys.SessionID] == self.appDelegate.sessionID {
                 print("sessin not destroyed")
