@@ -6,11 +6,18 @@
 //  Copyright © 2016 TinaNi. All rights reserved.
 //
 
+struct UdacityConstants {
+    // MARK: URLs
+    static let ApiScheme = "https"
+    static let ApiHost = "www.udacity.com"
+    static let ApiPath = "/api"
+}
+
 // MARK: Methods
 struct UdacityMethods {
     
-    static let Session = "https://www.udacity.com/api/session"
-    static let Users = "https://www.udacity.com/api/users"
+    static let Session = "/session"
+    static let Users = "/users"
     
 }
 

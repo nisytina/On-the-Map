@@ -48,6 +48,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // MARK: Logout
     
     func logout() {
+        
         dismissViewControllerAnimated(true, completion: nil)
     }
 

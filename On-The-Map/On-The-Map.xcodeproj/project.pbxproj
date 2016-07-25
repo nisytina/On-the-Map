@@ -21,6 +21,8 @@
 		E68195391D45255A006224A7 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68195381D452559006224A7 /* TableViewController.swift */; };
 		E681953B1D4525A9006224A7 /* UdacityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E681953A1D4525A9006224A7 /* UdacityClient.swift */; };
 		E681953D1D4573ED006224A7 /* ParseConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = E681953C1D4573ED006224A7 /* ParseConvenience.swift */; };
+		E681DE351D46932F007EF60A /* Convevience.swift in Sources */ = {isa = PBXBuildFile; fileRef = E681DE341D46932F007EF60A /* Convevience.swift */; };
+		E681DE371D4693FD007EF60A /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = E681DE361D4693FD007EF60A /* UdacityConvenience.swift */; };
 		E6BFE4A31D429672000D1FBA /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BFE4A21D429672000D1FBA /* GCDBlackBox.swift */; };
 		E6BFE4AA1D42A290000D1FBA /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BFE4A91D42A290000D1FBA /* UdacityConstants.swift */; };
 /* End PBXBuildFile section */
@@ -63,6 +65,8 @@
 		E68195381D452559006224A7 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		E681953A1D4525A9006224A7 /* UdacityClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityClient.swift; sourceTree = "<group>"; };
 		E681953C1D4573ED006224A7 /* ParseConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConvenience.swift; sourceTree = "<group>"; };
+		E681DE341D46932F007EF60A /* Convevience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convevience.swift; sourceTree = "<group>"; };
+		E681DE361D4693FD007EF60A /* UdacityConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
 		E6BFE4A21D429672000D1FBA /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GCDBlackBox.swift; path = "../../../proj3/ios-nd-networking-master/MyFavoriteMoviesComplete/MyFavoriteMovies/GCDBlackBox.swift"; sourceTree = "<group>"; };
 		E6BFE4A91D42A290000D1FBA /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,6 +164,7 @@
 			children = (
 				E6BFE4A81D42A26F000D1FBA /* Parse */,
 				E6BFE4A61D42A25C000D1FBA /* Udacity */,
+				E681DE341D46932F007EF60A /* Convevience.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 			children = (
 				E6BFE4A91D42A290000D1FBA /* UdacityConstants.swift */,
 				E681953A1D4525A9006224A7 /* UdacityClient.swift */,
+				E681DE361D4693FD007EF60A /* UdacityConvenience.swift */,
 			);
 			name = Udacity;
 			sourceTree = "<group>";
@@ -317,12 +323,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E681953B1D4525A9006224A7 /* UdacityClient.swift in Sources */,
+				E681DE351D46932F007EF60A /* Convevience.swift in Sources */,
 				E68195371D43E6C4006224A7 /* studentLocation.swift in Sources */,
 				E61348E01D42753800CCA6E5 /* LoginViewController.swift in Sources */,
 				E6BFE4A31D429672000D1FBA /* GCDBlackBox.swift in Sources */,
 				E68195351D43E573006224A7 /* ParseClient.swift in Sources */,
 				E61348DE1D42753800CCA6E5 /* AppDelegate.swift in Sources */,
 				E68195311D43B3B4006224A7 /* MapViewController.swift in Sources */,
+				E681DE371D4693FD007EF60A /* UdacityConvenience.swift in Sources */,
 				E681953D1D4573ED006224A7 /* ParseConvenience.swift in Sources */,
 				E6BFE4AA1D42A290000D1FBA /* UdacityConstants.swift in Sources */,
 				E68195391D45255A006224A7 /* TableViewController.swift in Sources */,
