@@ -23,9 +23,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.delegate = self;
-        parentViewController!.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Reply, target: self, action: #selector(logout))
-        
-        print(message)
+        //print(message)
     }
         
     
@@ -47,10 +45,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     // MARK: Logout
     
-    func logout() {
-        
+    @IBAction func logout(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+
 
     
 //    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
