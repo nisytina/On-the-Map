@@ -8,6 +8,13 @@
 
 extension ParseClient {
     
+    struct ParseConstants {
+        // MARK: URLs
+        static let ApiScheme = "https"
+        static let ApiHost = "api.parse.com"
+        static let ApiPath = "/1"
+    }
+    
     struct ParseAPIKey {
         static let Parse_Application_ID = "X-Parse-Application-Id"
         static let REST_API_Key = "X-Parse-REST-API-Key"
@@ -19,10 +26,13 @@ extension ParseClient {
     }
     
     struct ParseMethods {
-        static let studentLocation = "https://api.parse.com/1/classes/StudentLocation"
+        static let studentLocation = "/classes/StudentLocation"
     }
     
     struct ParameterKey {
+        static let limit = "limit"
+        static let skip = "skip"
+        static let order = "order"
         
     }
     

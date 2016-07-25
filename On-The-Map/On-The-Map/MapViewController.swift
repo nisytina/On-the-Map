@@ -12,18 +12,45 @@ import MapKit
 class MapViewController: UIViewController, MKMapViewDelegate {
     
     var appDelegate: AppDelegate!
-    let session = NSURLSession.sharedSession()
+
+    //MARK: Properties
+    var locations: [studentLocation] = [studentLocation]()
     var message: String! = nil
+    
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var logOut: UIBarButtonItem!
+    //@IBOutlet weak var logOut: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.delegate = self;
-        appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        parentViewController!.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Reply, target: self, action: #selector(logout))
+        
         print(message)
-        getStudentLocations()
     }
+        
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        ParseClient.sharedInstance().getStudentLocations { (locations, error) in
+            if let locations = locations {
+                self.locations = locations
+                
+                performUIUpdatesOnMain {
+                    self.displayStudentLocations(locations)
+                }
+            } else {
+                print(error)
+            }
+        }
+    }
+
+    // MARK: Logout
+    
+    func logout() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
     
 //    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
 //        if (annotation is MKUserLocation) {
@@ -48,59 +75,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 //        }
 //    }
     
-    
-    
-    func getStudentLocations() {
-        
-        let request = NSMutableURLRequest(URL: NSURL(string: ParseClient.ParseMethods.studentLocation)!)
-        request.addValue(ParseClient.ParseAPIValue.Parse_Application_ID, forHTTPHeaderField: ParseClient.ParseAPIKey.Parse_Application_ID)
-        request.addValue(ParseClient.ParseAPIValue.REST_API_Key, forHTTPHeaderField: ParseClient.ParseAPIKey.REST_API_Key)
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                print("Your request returned a status code other than 2xx!")
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                print("No data was returned by the request!")
-                return
-            }
-//          print(NSString(data: data, encoding: NSUTF8StringEncoding))
-            
-            /* 5A. Parse the data */
-            let parsedResult: AnyObject!
-            do {
-                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            } catch {
-                print("Could not parse the data as JSON: '\(data)'")
-                return
-            }
-            
-            //6. use data
-            if let results = parsedResult[ParseClient.JSONResponseKeys.result] as? [[String : AnyObject]] {
-                
-                let locations = studentLocation.locationsFromResults(results)
-                //display locations on the map
-                self.displayStudentLocations(locations)
-//                print(locations)
 
-            } else {
-                
-                print("can't parse location info")
-            }
-        }
-        task.resume()
-        
-    }
-    
     func displayStudentLocations(results: [studentLocation]) {
         
         for result in results {
@@ -112,10 +87,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             mapView.addAnnotation(dropPin)
         }
         
-    }
-    
-    @IBAction func logout() {
-        deleteSession()
     }
     
     func deleteSession() {
@@ -188,7 +159,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         task.resume()
         
     }
-    
-    
+
 
 }

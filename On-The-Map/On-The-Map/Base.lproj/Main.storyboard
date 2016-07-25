@@ -184,7 +184,6 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="On The Map" id="11w-B6-EVb">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="97Q-5I-kph"/>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="refresh" id="5t9-ya-SuL"/>
                             <barButtonItem image="addNew" id="FoS-50-p1z"/>
@@ -234,11 +233,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="OfP-gX-KDF">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="AfV-Yc-jy5">
-                            <connections>
-                                <action selector="logout" destination="2MV-AC-5dl" id="Av0-a6-ysZ"/>
-                            </connections>
-                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="refresh" id="ppi-bE-I6f"/>
                             <barButtonItem image="addNew" id="1Ej-J8-OJB"/>
@@ -246,7 +240,6 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
-                        <outlet property="logOut" destination="AfV-Yc-jy5" id="Hjb-7G-9WD"/>
                         <outlet property="mapView" destination="nVD-Mv-fQ0" id="D6B-hF-nZH"/>
                     </connections>
                 </viewController>
