@@ -37,7 +37,6 @@ class TableViewController: UIViewController {
                 self.locations = locations
                 performUIUpdatesOnMain {
                     self.locationsTableView.reloadData()
-                    print("loaded")
                 }
             } else {
                 print(error)
@@ -65,31 +64,22 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
         /* Set cell defaults */
         cell.setText(location.firstName + " " + location.lastName, link: location.mediaURL)
         
-//        if let posterPath = location.posterPath {
-//            TMDBClient.sharedInstance().taskForGETImage(TMDBClient.PosterSizes.RowPoster, filePath: posterPath, completionHandlerForImage: { (imageData, error) in
-//                if let image = UIImage(data: imageData!) {
-//                    performUIUpdatesOnMain {
-//                        cell.imageView!.image = image
-//                    }
-//                } else {
-//                    print(error)
-//                }
-//            })
-//        }
-        
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(locations.count)
         return locations.count
     }
     
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        let controller = storyboard!.instantiateViewControllerWithIdentifier("MovieDetailViewController") as! MovieDetailViewController
-//        controller.movie = movies[indexPath.row]
-//        navigationController!.pushViewController(controller, animated: true)
-//    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let location = locations[indexPath.row]
+        let link = location.mediaURL
+        
+        if let requestUrl = NSURL(string: link) {
+            UIApplication.sharedApplication().openURL(requestUrl)
+        }
+    }
     
 //    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
 //        return 100

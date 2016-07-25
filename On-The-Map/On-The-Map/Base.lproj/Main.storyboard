@@ -210,6 +210,7 @@
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="2dn-ba-Hrv" id="cpj-p8-z5Z"/>
+                            <outlet property="delegate" destination="2dn-ba-Hrv" id="I6R-oq-VLu"/>
                         </connections>
                     </tableView>
                     <toolbarItems/>
