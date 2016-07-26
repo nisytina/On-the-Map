@@ -42,7 +42,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-
+    
+    
     // MARK: Logout
     
     @IBAction func logout(sender: AnyObject) {
@@ -86,6 +87,39 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             mapView.addAnnotation(dropPin)
         }
         
+    }
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        let reuseId = "locations"
+        let buttonType = UIButtonType.InfoDark
+        let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        
+        pinView.canShowCallout = true
+        pinView.rightCalloutAccessoryView = UIButton(type: buttonType)
+        
+        return pinView
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView,
+                 calloutAccessoryControlTapped control: UIControl) {
+        
+        if control == view.rightCalloutAccessoryView {
+            
+            let link = ((view.annotation?.subtitle)!)! as String
+            
+            if let requestUrl = NSURL(string: link) {
+                if UIApplication.sharedApplication().canOpenURL(requestUrl) {
+                    UIApplication.sharedApplication().openURL(requestUrl)
+                } else {
+                    
+                    let alertController = UIAlertController(title: "Error", message:
+                        "invalid link", preferredStyle: UIAlertControllerStyle.Alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     func deleteSession() {
