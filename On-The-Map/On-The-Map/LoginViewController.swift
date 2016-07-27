@@ -56,14 +56,27 @@ class LoginViewController: UIViewController {
             
             if let error = error {
                 print(error)
+                return
             } else {
                 UdacityClient.sharedInstance().SessionID = SessionResults[UdacityJSONResponseKeys.SessionID]
                 UdacityClient.sharedInstance().UserID = SessionResults[UdacityJSONResponseKeys.UserID
                 ]
-                 //load map view
-                performUIUpdatesOnMain{
-                    self.performSegueWithIdentifier("Map", sender: self)
+                
+                UdacityClient.sharedInstance().getUserInfo {
+                    (result, error) in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        if result as? Bool == true  {
+                            //load map view
+                            performUIUpdatesOnMain{
+                                self.performSegueWithIdentifier("Map", sender: self)
+                            }
+                        }
+                    }
+                    
                 }
+                
             }
         }
     }

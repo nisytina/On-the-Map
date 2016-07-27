@@ -38,7 +38,6 @@ extension UdacityClient {
                             var sessionInfo: [String:String] = ["":""]
                             sessionInfo[UdacityJSONResponseKeys.SessionID] = session[UdacityJSONResponseKeys.SessionID]
                             sessionInfo[UdacityJSONResponseKeys.UserID] = account[UdacityJSONResponseKeys.UserID] as? String
-                            
                             completionHandlerForCrSession(result: sessionInfo, error: nil)
                         } else {
                             completionHandlerForCrSession(result: ["":""], error: NSError(domain: "createSession parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not find account information"]))
@@ -54,6 +53,25 @@ extension UdacityClient {
             }
         }
     
+    }
+    
+    func getUserInfo(completionHandlerForUserInfo: (result: AnyObject?, error: NSError?) -> Void) {
+        let finalMethod = Convenience.subtituteKeyInMethod(UdacityMethods.Users, key: "user_id", value: UserID!)
+        taskForGETMethod(finalMethod!) {(result, error) in
+            if let error = error {
+                completionHandlerForUserInfo(result: nil, error: error)
+            } else {
+                if let user = result[UdacityJSONResponseKeys.user] as! [String: AnyObject]? {
+                let result = true
+                UdacityClient.sharedInstance().firstName = user[UdacityJSONResponseKeys.firstname] as? String
+                UdacityClient.sharedInstance().lastName = user[UdacityJSONResponseKeys.lastname] as? String
+                completionHandlerForUserInfo(result: result, error: error)
+                    
+                } else {
+                    completionHandlerForUserInfo(result: nil, error: NSError(domain: "UserInfo parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not find User Info"]))
+                }
+            }
+        }
     }
     
     func destroySession() {

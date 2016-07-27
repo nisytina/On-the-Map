@@ -15,8 +15,9 @@ class Convenience {
     
     // substitute the key for the value that is contained within the method name
     static func subtituteKeyInMethod(method: String, key: String, value: String) -> String? {
-        if method.rangeOfString("{\(key)}") != nil {
-            return method.stringByReplacingOccurrencesOfString("{\(key)}", withString: value)
+            
+        if method.rangeOfString("<\(key)>") != nil {
+            return method.stringByReplacingOccurrencesOfString("<\(key)>", withString: value)
         } else {
             return nil
         }

@@ -17,7 +17,7 @@ struct UdacityConstants {
 struct UdacityMethods {
     
     static let Session = "/session"
-    static let Users = "/users"
+    static let Users = "/users/<user_id>"
     
 }
 
@@ -49,5 +49,10 @@ struct UdacityJSONResponseKeys {
     static let SessionID = "id"
     static let Expiration = "expiration"
     static let UserID = "key"
+    
+    // MARK: User
+    static let user = "user"
+    static let firstname = "first_name"
+    static let lastname = "last_name"
     
 }

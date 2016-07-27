@@ -26,6 +26,8 @@ class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var locationTextView: UITextView!
     @IBOutlet weak var buttonBackView: UIView!
     
+    var coordinates: CLLocationCoordinate2D?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SubmitButton.hidden = true
@@ -69,35 +71,38 @@ class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
             }
             if let placemark = placemarks?.first {
                 self.changeView()
-                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
-                
-                let location = CLLocationCoordinate2DMake(coordinates.latitude, coordinates.longitude)
+                self.coordinates = placemark.location!.coordinate
+                let location = CLLocationCoordinate2DMake(self.coordinates!.latitude, self.coordinates!.longitude)
                 let dropPin = MKPointAnnotation()
                 dropPin.coordinate = location
                 self.mapView.addAnnotation(dropPin)
-                
-                // optionally you can set your own boundaries of the zoom
+                // set boundaries of the zoom
                 let span = MKCoordinateSpanMake(0.01, 0.01)
-                
                 // now move the map
                 let region = MKCoordinateRegion(center: dropPin.coordinate, span: span)
                 self.mapView.setRegion(region, animated: true)
             }
         })
-        
     }
+    
     
     
     @IBAction func submit(sender: AnyObject) {
         
-        //send request to Parse to PUT new data
-        dismissViewControllerAnimated(true, completion: nil)
+        if (linkTextView.text == "Enter a Link to Share Here" || linkTextView.text == nil) {
+            Convenience.alert(self, title: "Error", message: "Please enter a link", actionTitle: "enter")
+        } else {
+            
+            let jsonBody: String = "{\"uniqueKey\": \"\(UdacityClient.sharedInstance().UserID!)\", \"firstName\": \"\(UdacityClient.sharedInstance().firstName!)\" , \"lastName\": \"\(UdacityClient.sharedInstance().lastName!)\",\"mapString\": \"\(locationTextView.text)\", \"mediaURL\": \"\(linkTextView.text)\",\"latitude\": \(coordinates!.latitude), \"longitude\": \(coordinates!.longitude)}"
+            print(jsonBody)
+            
+            ParseClient.sharedInstance().putNewLocation(jsonBody) { (result, error) in
+                if result == true {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    print(error)
+                }
+            }
+        }
     }
-    
-    
-    
-    
-    
-    
-    
 }

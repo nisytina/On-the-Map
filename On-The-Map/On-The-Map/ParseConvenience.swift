@@ -38,6 +38,30 @@ extension ParseClient {
         }
     }
     
+    func putNewLocation(jsonBody: String, completionHandlerForNewLocation: (result: Bool, error: NSError?) -> Void) {
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let parameters = ["":""]
+        let mutableMethod: String = ParseClient.ParseMethods.studentLocation
+        let jsonBody = jsonBody
+        
+        /* 2. Make the request */
+        taskForPOSTMethod(mutableMethod, parameters: parameters, jsonBody: jsonBody) { (result, error) in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandlerForNewLocation(result: false, error: error)
+            } else {
+                print(result)
+                
+                if let _ = result[ParseClient.JSONResponseKeys.StudentLocationObjectId] as? String {
+                    completionHandlerForNewLocation(result: true, error: nil)
+                } else {
+                    completionHandlerForNewLocation(result: false, error: NSError(domain: "putNewLocation parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse putNewLocation"]))
+                }
+            }
+        }
+    }
 }
 
 
