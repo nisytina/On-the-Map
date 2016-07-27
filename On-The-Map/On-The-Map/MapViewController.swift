@@ -86,7 +86,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // MARK: Logout
     
     @IBAction func logout(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+        UdacityClient.sharedInstance().destroySession {(result, error) in
+            if let error = error {
+                print(error)
+                Convenience.alert(self, title: "Error", message: "Can't logout. Try again later", actionTitle: "Dismiss")
+            } else {
+                if let _ = result {
+                    performUIUpdatesOnMain {
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                }
+            }
+        }
     }
 
     func displayStudentLocations(results: [studentLocation]) {
@@ -134,77 +145,5 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    
-    func deleteSession() {
-        
-        let request = NSMutableURLRequest(URL: NSURL(string: UdacityMethods.Session)!)
-        request.HTTPMethod = "DELETE"
-        var xsrfCookie: NSHTTPCookie? = nil
-        let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-        for cookie in sharedCookieStorage.cookies! {
-            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
-        }
-        if let xsrfCookie = xsrfCookie {
-            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
-        }
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            //            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-            //                print("Your request returned a status code other than 2xx!")
-            //                return
-            //            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                print("No data was returned by the request!")
-                return
-            }
-            
-            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) /* subset response data! */
-            print(NSString(data: newData, encoding: NSUTF8StringEncoding))
-            /* 5A. Parse the data */
-            let parsedResult: AnyObject!
-            do {
-                parsedResult = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
-            } catch {
-                print("Could not parse the data as JSON: '\(newData)'")
-                return
-            }
-            
-            /* GUARD: Did Udacity return an error? */
-            if let _ = parsedResult[UdacityJSONResponseKeys.StatusCode] as? Int {
-                performUIUpdatesOnMain {
-                    if let error = parsedResult[UdacityJSONResponseKeys.StatusMessage]! {
-                        print(error)
-                    }
-                }
-                return
-            }
-            
-            /* GUARD: Is the session created sucessfully?  */
-            guard let session = parsedResult[UdacityJSONResponseKeys.Session] as? [String:String] else {
-                print("Cannot get session id")
-                return
-            }
-            
-            if session[UdacityJSONResponseKeys.SessionID] == self.appDelegate.sessionID {
-                print("sessin not destroyed")
-                return
-            }
-            performUIUpdatesOnMain {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-        task.resume()
-        
-    }
-
 
 }

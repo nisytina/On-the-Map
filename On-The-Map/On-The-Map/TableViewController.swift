@@ -76,9 +76,19 @@ class TableViewController: UIViewController {
     }
     // MARK: Logout
     @IBAction func logout() {
-        dismissViewControllerAnimated(true, completion: nil)
+        UdacityClient.sharedInstance().destroySession {(result, error) in
+            if let error = error {
+                print(error)
+                Convenience.alert(self, title: "Error", message: "Can't logout. Try again later", actionTitle: "Dismiss")
+            } else {
+                if let _ = result {
+                    performUIUpdatesOnMain {
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                }
+            }
+        }
     }
-    
     
 }
 

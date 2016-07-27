@@ -74,7 +74,22 @@ extension UdacityClient {
         }
     }
     
-    func destroySession() {
+    func destroySession(completionHandlerForDelete: (result: AnyObject?, error: NSError?) -> Void) {
         
+        taskForDELETEMethod { (result, error) in
+            if let error = error {
+                completionHandlerForDelete(result: nil, error: error)
+            } else {
+                if let session = result[UdacityJSONResponseKeys.Session] as? [String:String] {
+                    if session[UdacityJSONResponseKeys.SessionID] != UdacityClient.sharedInstance().SessionID {
+                        completionHandlerForDelete(result: true, error: nil)
+                    } else {
+                        completionHandlerForDelete(result: nil, error: NSError(domain: "Delete session", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not destroy session"]))
+                    }
+                } else {
+                    completionHandlerForDelete(result: nil, error: NSError(domain: "Delete session", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse session info"]))
+                }
+            }
+        }
     }
 }
