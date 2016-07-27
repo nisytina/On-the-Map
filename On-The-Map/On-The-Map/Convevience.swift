@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Convenience {
     
@@ -33,6 +34,14 @@ class Convenience {
         }
         
         completionHandlerForConvertData(result: parsedResult, error: nil)
+    }
+    
+    static func alert(sender: AnyObject?, title: String, message: String, actionTitle: String){
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: actionTitle, style: UIAlertActionStyle.Default,handler: nil))
+        
+        sender!.presentViewController(alertController, animated: true, completion: nil)
     }
     
 }

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MapKit
+import CoreLocation
 
 class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
     
@@ -35,7 +36,8 @@ class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func findLocation(sender: AnyObject) {
+    private func changeView() {
+        
         backView.backgroundColor = locationTextView.backgroundColor
         buttonBackView.backgroundColor = UIColor.clearColor()
         linkTextView.hidden = false
@@ -45,10 +47,50 @@ class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
         locationLabel3.hidden = true
         locationTextView.hidden = true
         findLocationButton.hidden = true
+        
+    }
+    
+    @IBAction func findLocation(sender: AnyObject) {
+        
+        //geocode the location string pin that location on map
+        geocodeLocation(locationTextView.text)
+        
+    }
+    
+    private func geocodeLocation(location: String) {
+        
+        let address = location
+        let geocoder = CLGeocoder()
+        
+        geocoder.geocodeAddressString(address, completionHandler: {(placemarks, error) -> Void in
+            if((error) != nil){
+                Convenience.alert(self, title: "Error", message: "Can't geocode the location", actionTitle: "Try again")
+                print("Error", error)
+            }
+            if let placemark = placemarks?.first {
+                self.changeView()
+                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
+                
+                let location = CLLocationCoordinate2DMake(coordinates.latitude, coordinates.longitude)
+                let dropPin = MKPointAnnotation()
+                dropPin.coordinate = location
+                self.mapView.addAnnotation(dropPin)
+                
+                // optionally you can set your own boundaries of the zoom
+                let span = MKCoordinateSpanMake(0.01, 0.01)
+                
+                // now move the map
+                let region = MKCoordinateRegion(center: dropPin.coordinate, span: span)
+                self.mapView.setRegion(region, animated: true)
+            }
+        })
+        
     }
     
     
     @IBAction func submit(sender: AnyObject) {
+        
+        //send request to Parse to PUT new data
         dismissViewControllerAnimated(true, completion: nil)
     }
     

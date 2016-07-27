@@ -251,8 +251,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="MLz-7v-GtI">
+                            <mapView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="MLz-7v-GtI">
                                 <rect key="frame" x="0.0" y="205" width="414" height="531"/>
+                                <connections>
+                                    <outlet property="delegate" destination="KCw-KQ-SFM" id="Fah-Ec-sHo"/>
+                                </connections>
                             </mapView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter a Link to Share Here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="pF7-eU-Ycq">
                                 <rect key="frame" x="-1" y="57" width="414" height="48"/>
@@ -269,6 +272,12 @@
                                     <action selector="cancel:" destination="KCw-KQ-SFM" eventType="touchUpInside" id="5jb-Yp-ohY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Where are you " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkO-cA-3pe">
+                                <rect key="frame" x="126" y="64" width="162" height="34"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                                <color key="textColor" red="0.020396392617449664" green="0.18592701342281878" blue="0.5350251677852349" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="studying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aah-2Y-ekX">
                                 <rect key="frame" x="153" y="109" width="102" height="36"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
@@ -281,13 +290,6 @@
                                 <color key="textColor" red="0.020396392617449664" green="0.18592701342281878" blue="0.5350251677852349" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter your Location" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0QH-qZ-mx9">
-                                <rect key="frame" x="0.0" y="205" width="414" height="383"/>
-                                <color key="backgroundColor" red="0.26153630018234253" green="0.5390625" blue="0.83247692953020136" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="textColor" white="0.88622063758389258" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qyl-cT-rdd">
                                 <rect key="frame" x="0.0" y="588" width="414" height="148"/>
                                 <subviews>
@@ -316,12 +318,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Where are you " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkO-cA-3pe">
-                                <rect key="frame" x="126" y="64" width="162" height="34"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
-                                <color key="textColor" red="0.020396392617449664" green="0.18592701342281878" blue="0.5350251677852349" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter your Location" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0QH-qZ-mx9">
+                                <rect key="frame" x="0.0" y="205" width="414" height="383"/>
+                                <color key="backgroundColor" red="0.26153630018234253" green="0.5390625" blue="0.83247692953020136" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="0.88622063758389258" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
