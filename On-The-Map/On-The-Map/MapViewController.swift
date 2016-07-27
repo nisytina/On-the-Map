@@ -43,38 +43,42 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    @IBAction func addNew(sender: AnyObject) {
+        
+        ParseClient.sharedInstance().getUserStudentLocation { (result, error) in
+            
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            if let _ = result {
+                // need to update
+                let alertController = UIAlertController(title: nil, message:
+                    "User " + "\(UdacityClient.sharedInstance().firstName!) " + "\(UdacityClient.sharedInstance().lastName!) Has Already Posted a Student Location. Would you Like to Overwrite Their Location?", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel,handler: nil))
+                alertController.addAction(UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+                    performUIUpdatesOnMain{
+                        self.performSegueWithIdentifier("AddNew", sender: self)
+                    }
+                }))
+                performUIUpdatesOnMain{
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                }
+                
+            } else {
+                performUIUpdatesOnMain{
+                    self.performSegueWithIdentifier("AddNew", sender: self)
+                }
+            }
+        }
+    }
     
     // MARK: Logout
     
     @IBAction func logout(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }
-
-
-    
-//    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-//        if (annotation is MKUserLocation) {
-//            return nil
-//        }
-//        
-//        if (annotation.isKindOfClass(CustomAnnotation)) {
-//            let customAnnotation = annotation as? CustomAnnotation
-//            mapView.translatesAutoresizingMaskIntoConstraints = false
-//            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("CustomAnnotation") as MKAnnotationView!
-//            
-//            if (annotationView == nil) {
-//                annotationView = customAnnotation?.annotationView()
-//            } else {
-//                annotationView.annotation = annotation;
-//            }
-//            
-//            self.addBounceAnimationToView(annotationView)
-//            return annotationView
-//        } else {
-//            return nil
-//        }
-//    }
-    
 
     func displayStudentLocations(results: [studentLocation]) {
         
@@ -121,6 +125,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
+    
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "AddNew" {
+//            
+//            let addNewViewController = segue.destinationViewController 
+//            
+//        }
+//        
+//    }
     
     func deleteSession() {
         

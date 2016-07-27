@@ -30,6 +30,7 @@ extension ParseClient {
     }
     
     struct ParameterKey {
+        static let query = "where"
         static let limit = "limit"
         static let skip = "skip"
         static let order = "order"

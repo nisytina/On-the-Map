@@ -19,6 +19,7 @@ class UdacityClient: NSObject {
     var UserID: String? = nil
     var firstName: String? = nil
     var lastName: String? = nil
+    var locationAdded: Bool = false
     
     // MARK: Initializers
     

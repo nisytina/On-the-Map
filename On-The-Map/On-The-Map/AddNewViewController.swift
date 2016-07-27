@@ -94,10 +94,10 @@ class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
         } else {
             
             let jsonBody: String = "{\"uniqueKey\": \"\(UdacityClient.sharedInstance().UserID!)\", \"firstName\": \"\(UdacityClient.sharedInstance().firstName!)\" , \"lastName\": \"\(UdacityClient.sharedInstance().lastName!)\",\"mapString\": \"\(locationTextView.text)\", \"mediaURL\": \"\(linkTextView.text)\",\"latitude\": \(coordinates!.latitude), \"longitude\": \(coordinates!.longitude)}"
-            print(jsonBody)
             
             ParseClient.sharedInstance().putNewLocation(jsonBody) { (result, error) in
                 if result == true {
+                    UdacityClient.sharedInstance().locationAdded = true
                     self.dismissViewControllerAnimated(true, completion: nil)
                 } else {
                     print(error)

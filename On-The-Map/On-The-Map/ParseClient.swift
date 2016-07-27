@@ -25,13 +25,16 @@ class ParseClient: NSObject {
         
         /* 1. Set the parameters */
         var parametersWithApiKey = parameters
-        //print(tmdbURLFromParameters(parametersWithApiKey, withPathExtension: method))
+        print(tmdbURLFromParameters(parametersWithApiKey, withPathExtension: method))
         
         /* 2/3. Build the URL, Configure the request */
         let request = NSMutableURLRequest(URL: tmdbURLFromParameters(parametersWithApiKey, withPathExtension: method))
-        
         request.addValue(ParseAPIValue.Parse_Application_ID, forHTTPHeaderField: ParseAPIKey.Parse_Application_ID)
         request.addValue(ParseAPIValue.REST_API_Key, forHTTPHeaderField: ParseAPIKey.REST_API_Key)
+        if let _ = parameters["where"] {
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        
         
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
@@ -95,11 +98,11 @@ class ParseClient: NSObject {
                 return
             }
             
-//            /* GUARD: Did we get a successful 2XX response? */
-//            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-//                sendError("Your request returned a status code other than 2xx!" + response)
-//                return
-//            }
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
@@ -118,21 +121,31 @@ class ParseClient: NSObject {
     // create a URL from parameters
     private func tmdbURLFromParameters(parameters: [String:AnyObject], withPathExtension: String? = nil) -> NSURL {
         
+        var URLString: String = ""
+        
         let components = NSURLComponents()
         components.scheme = ParseConstants.ApiScheme
         components.host = ParseConstants.ApiHost
         components.path = ParseConstants.ApiPath + (withPathExtension ?? "")
-        components.queryItems = [NSURLQueryItem]()
+        
+        URLString = URLString + components.scheme! + "://" + components.host! + components.path! + "?"
+        
+        //components.queryItems = [NSURLQueryItem]()
         
         for (key, value) in parameters {
+        
             if (key == "") {
                 continue
             }
             let queryItem = NSURLQueryItem(name: key, value: "\(value)")
-            components.queryItems!.append(queryItem)
+            //components.queryItems!.append(queryItem)
+            let query: String = queryItem.name + "=" + queryItem.value!
+            let newQ = query.stringByAddingPercentEncodingWithAllowedCharacters(.URLPathAllowedCharacterSet())
+            URLString += newQ!
+            URLString += "&"
+            
         }
-        
-        return components.URL!
+        return NSURL(string: URLString)!
     }
     
     // MARK: Shared Instance

@@ -38,6 +38,36 @@ extension ParseClient {
         }
     }
     
+    // MARK: GET uesr student location
+    
+    func getUserStudentLocation(completionHandlerForUserStdLocations: (result: AnyObject?, error: NSError?) -> Void) {
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        
+//        "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}"
+        
+        
+//        let jsonData = ["uniqueKey":"\(UdacityClient.sharedInstance().UserID!)"]
+        let parameters = [ParseClient.ParameterKey.query: "{\"uniqueKey\":\"\(UdacityClient.sharedInstance().UserID!)\"}"]
+        let mutableMethod: String = ParseClient.ParseMethods.studentLocation
+        
+        /* 2. Make the request */
+        taskForGETMethod(mutableMethod, parameters: parameters) { (results, error) in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandlerForUserStdLocations(result: nil, error: error)
+            } else {
+                if let _ = results[ParseClient.JSONResponseKeys.result] as? [[String:AnyObject]] {
+                    completionHandlerForUserStdLocations(result: true, error: nil)
+                } else {
+                    completionHandlerForUserStdLocations(result: nil, error: NSError(domain: "getUserStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getUserStudentLocations"]))
+                }
+            }
+        }
+        
+    }
+    
     func putNewLocation(jsonBody: String, completionHandlerForNewLocation: (result: Bool, error: NSError?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
@@ -52,7 +82,6 @@ extension ParseClient {
             if let error = error {
                 completionHandlerForNewLocation(result: false, error: error)
             } else {
-                print(result)
                 
                 if let _ = result[ParseClient.JSONResponseKeys.StudentLocationObjectId] as? String {
                     completionHandlerForNewLocation(result: true, error: nil)

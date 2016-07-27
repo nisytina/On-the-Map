@@ -224,7 +224,7 @@
                             <barButtonItem systemItem="refresh" id="5t9-ya-SuL"/>
                             <barButtonItem image="addNew" id="FoS-50-p1z">
                                 <connections>
-                                    <segue destination="KCw-KQ-SFM" kind="presentation" id="9Xk-g8-7KK"/>
+                                    <segue destination="KCw-KQ-SFM" kind="presentation" identifier="AddNew" id="aE2-FS-h8P"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -395,7 +395,8 @@
                             <barButtonItem systemItem="refresh" id="ppi-bE-I6f"/>
                             <barButtonItem image="addNew" id="1Ej-J8-OJB">
                                 <connections>
-                                    <segue destination="KCw-KQ-SFM" kind="presentation" id="mdb-yv-uz3"/>
+                                    <action selector="addNew:" destination="2MV-AC-5dl" id="c0E-CX-Cgb"/>
+                                    <segue destination="KCw-KQ-SFM" kind="presentation" identifier="AddNew" id="aP1-cn-aqK"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -415,6 +416,6 @@
         <image name="addNew" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9Xk-g8-7KK"/>
+        <segue reference="aE2-FS-h8P"/>
     </inferredMetricsTieBreakers>
 </document>
