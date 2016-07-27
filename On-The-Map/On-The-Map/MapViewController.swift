@@ -65,7 +65,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 performUIUpdatesOnMain{
                     self.presentViewController(alertController, animated: true, completion: nil)
                 }
-                
             } else {
                 performUIUpdatesOnMain{
                     self.performSegueWithIdentifier("AddNew", sender: self)
@@ -125,15 +124,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "AddNew" {
-//            
-//            let addNewViewController = segue.destinationViewController 
-//            
-//        }
-//        
-//    }
     
     func deleteSession() {
         

@@ -1,3 +1,4 @@
+7/21
 1. build log in view controller and can log in using Udacity account
 2. Use apple map and can get studentLocation info from Parse and display info on the map.
 3. Display studntLocation info in list
@@ -5,3 +6,18 @@
 5. edit/overwrite pin on the map
 6. tab info to redirect to the link provided
 
+
+7/27
+Complete: 
+1. build the login view and can login 
+2. show 100 latest user locations
+3. check if the user has already put a location
+4. add a new location
+5. logout function
+
+to-do:
+1. connect sign in button
+2. update the user location
+3. MVC logout
+4. UI optimization
+5. refresh button

@@ -224,6 +224,7 @@
                             <barButtonItem systemItem="refresh" id="5t9-ya-SuL"/>
                             <barButtonItem image="addNew" id="FoS-50-p1z">
                                 <connections>
+                                    <action selector="addNew:" destination="2dn-ba-Hrv" id="JwE-If-sB6"/>
                                     <segue destination="KCw-KQ-SFM" kind="presentation" identifier="AddNew" id="aE2-FS-h8P"/>
                                 </connections>
                             </barButtonItem>
