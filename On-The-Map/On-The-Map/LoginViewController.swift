@@ -81,6 +81,11 @@ class LoginViewController: UIViewController {
         }
     }
     
+    @IBAction func singup(sender: AnyObject) {
+        let link = NSURL(string: "https://www.udacity.com/account/auth#!/signup")
+    UIApplication.sharedApplication().openURL(link!)
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "Map" {
             

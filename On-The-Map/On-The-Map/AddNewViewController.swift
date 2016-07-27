@@ -11,7 +11,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
+class AddNewViewController: UIViewController, MKMapViewDelegate {
     
     
     @IBOutlet var backView: UIView!
@@ -27,6 +27,7 @@ class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var buttonBackView: UIView!
     
     var coordinates: CLLocationCoordinate2D?
+    var updateLoaction: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,14 +96,24 @@ class AddNewViewControllrt: UIViewController, MKMapViewDelegate {
             
             let jsonBody: String = "{\"uniqueKey\": \"\(UdacityClient.sharedInstance().UserID!)\", \"firstName\": \"\(UdacityClient.sharedInstance().firstName!)\" , \"lastName\": \"\(UdacityClient.sharedInstance().lastName!)\",\"mapString\": \"\(locationTextView.text)\", \"mediaURL\": \"\(linkTextView.text)\",\"latitude\": \(coordinates!.latitude), \"longitude\": \(coordinates!.longitude)}"
             
-            ParseClient.sharedInstance().putNewLocation(jsonBody) { (result, error) in
-                if result == true {
-                    UdacityClient.sharedInstance().locationAdded = true
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else {
-                    print(error)
+            // if it is the first time for a user to add location
+            if updateLoaction == false {
+                
+                ParseClient.sharedInstance().putNewLocation(jsonBody) { (result, error) in
+                    if result == true {
+                        UdacityClient.sharedInstance().locationAdded = true
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    } else {
+                        print(error)
+                    }
                 }
+                
+            } else {
+                // user request to change location
+                
             }
+            
+            
         }
     }
 }

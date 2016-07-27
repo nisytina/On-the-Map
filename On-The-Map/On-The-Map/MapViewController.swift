@@ -16,6 +16,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     //MARK: Properties
     var locations: [studentLocation] = [studentLocation]()
     var message: String! = nil
+    var updateLocation: Bool = false
     
     @IBOutlet weak var mapView: MKMapView!
     //@IBOutlet weak var logOut: UIBarButtonItem!
@@ -59,6 +60,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel,handler: nil))
                 alertController.addAction(UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
                     performUIUpdatesOnMain{
+                        self.updateLocation = true
                         self.performSegueWithIdentifier("AddNew", sender: self)
                     }
                 }))
@@ -71,6 +73,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 }
             }
         }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "AddNew" {
+            let addNewViewController = segue.destinationViewController as! AddNewViewController
+            addNewViewController.updateLoaction = updateLocation
+        }
+        
     }
     
     // MARK: Logout
