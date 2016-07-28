@@ -29,9 +29,13 @@ class TableViewController: UIViewController {
         super.viewDidAppear(animated)
         self.locationsTableView.reloadData()
     }
+
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
     
     func getLoc() {

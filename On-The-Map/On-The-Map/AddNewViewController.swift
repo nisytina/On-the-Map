@@ -44,9 +44,30 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
         loading.stopAnimating()
     }
     
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
+    }
+    // MARK: UITextViewDelegate
     func textViewDidBeginEditing(textView: UITextView) {
         textView.text = ""
     }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
+//    func textFieldShouldReturn(textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return true
+//    }
     
     @IBAction func cancel(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -110,11 +131,13 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
     
     @IBAction func submit(sender: AnyObject) {
         
-        if (linkTextView.text  == "Enter a Link to Share Here" || linkTextView.text  == "") {
+        let linkString = linkTextView.text
+        
+        if (linkString  == "Enter a Link to Share Here" || linkString  == "") {
             Convenience.alert(self, title: "Error", message: "Please enter a link", actionTitle: "enter")
             return
         }
-        let linkString = "https://" + linkTextView.text
+        
         if let validURL: NSURL = NSURL(string: linkString) {
             // Successfully constructed an NSURL; open it
             if !UIApplication.sharedApplication().canOpenURL(validURL) {
@@ -155,3 +178,4 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
         }
     }
 }
+

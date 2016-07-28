@@ -28,11 +28,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         getLoc()
         //print(message)
     }
-        
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+    }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
     
     func getLoc() {

@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  On-The-Map
 //
-//  Created by 倪世莹 on 22/7/2016.
+//  Created by Tina Ni on 22/7/2016.
 //  Copyright © 2016 TinaNi. All rights reserved.
 //
 
@@ -17,24 +17,33 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var Login: UIButton!
     @IBOutlet weak var SignUp: UIButton!
     @IBOutlet weak var errorMessage: UILabel!
+    @IBOutlet weak var loading: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        //MARK: Notification 0
-//        subscribeToNotification(UIKeyboardWillShowNotification, selector: #selector(keyboardWillShow))
-//        subscribeToNotification(UIKeyboardWillHideNotification, selector: #selector(keyboardWillHide))
-//        subscribeToNotification(UIKeyboardDidShowNotification, selector: #selector(keyboardDidShow))
-//        subscribeToNotification(UIKeyboardDidHideNotification, selector: #selector(keyboardDidHide))
+        EmailTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
+        PasswordTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
         errorMessage.text = ""
+        loading.stopAnimating()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        unsubscribeFromAllNotifications()
+//        unsubscribeFromAllNotifications()
+    }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
     
     @IBAction func login() {
+        loading.startAnimating()
+        // hide keyborad before login
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, forEvent:nil)
         
         guard let email = EmailTextfield.text where EmailTextfield.text != ""
          else {
@@ -52,6 +61,7 @@ class LoginViewController: UIViewController {
                 return
         }
         self.errorMessage.text = ""
+        
         UdacityClient.sharedInstance().createSession(email, password: password, errorMessage: errorMessage) {
             (SessionResults, error) in
             
@@ -71,8 +81,8 @@ class LoginViewController: UIViewController {
                         if result as? Bool == true  {
                             //load map view
                             performUIUpdatesOnMain{
+                                self.loading.stopAnimating()
                                     self.performSegueWithIdentifier("Map", sender: self)
-                                
                             }
                         }
                     }
@@ -99,71 +109,19 @@ class LoginViewController: UIViewController {
 
 }
 
+extension LoginViewController: UITextFieldDelegate {
+    
+    // MARK: UITextFieldDelegate
 
-
-//extension LoginViewController: UITextFieldDelegate {
-//    
-//    // MARK: UITextFieldDelegate
-//    
-//    func textFieldShouldReturn(textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
-//    
-//    // MARK: Show/Hide Keyboard
-//    
-//    func keyboardWillShow(notification: NSNotification) {
-//        if !keyboardOnScreen {
-//            view.frame.origin.y -= keyboardHeight(notification)
-//            movieImageView.hidden = true
-//        }
-//    }
-//    
-//    func keyboardWillHide(notification: NSNotification) {
-//        if keyboardOnScreen {
-//            view.frame.origin.y += keyboardHeight(notification)
-//            movieImageView.hidden = false
-//        }
-//    }
-//    
-//    func keyboardDidShow(notification: NSNotification) {
-//        keyboardOnScreen = true
-//    }
-//    
-//    func keyboardDidHide(notification: NSNotification) {
-//        keyboardOnScreen = false
-//    }
-//    
-//    private func keyboardHeight(notification: NSNotification) -> CGFloat {
-//        let userInfo = notification.userInfo
-//        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
-//        return keyboardSize.CGRectValue().height
-//    }
-//    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
 //    private func resignIfFirstResponder(textField: UITextField) {
 //        if textField.isFirstResponder() {
 //            textField.resignFirstResponder()
 //        }
 //    }
-//    
-//    @IBAction func userDidTapView(sender: AnyObject) {
-//        resignIfFirstResponder(usernameTextField)
-//        resignIfFirstResponder(passwordTextField)
-//    }
-//}
 
-// MARK: - LoginViewController (Notifications)
-
-extension LoginViewController {
-    
-    private func subscribeToNotification(notification: String, selector: Selector) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: selector, name: notification, object: nil)
-    }
-    
-    private func unsubscribeFromAllNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
 }
-
-
-
