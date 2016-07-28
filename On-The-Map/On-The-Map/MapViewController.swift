@@ -16,7 +16,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     //MARK: Properties
     var locations: [studentLocation] = [studentLocation]()
     var message: String! = nil
-    var updateLocation: Bool = false
     
     @IBOutlet weak var mapView: MKMapView!
     //@IBOutlet weak var logOut: UIBarButtonItem!
@@ -30,17 +29,36 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        getLoc()
+    }
+    
+    func getLoc() {
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
                 self.locations = locations
                 
                 performUIUpdatesOnMain {
+                    self.removeAllpins()
                     self.displayStudentLocations(locations)
                 }
             } else {
+                performUIUpdatesOnMain {
+                    Convenience.alert(self, title: "Error", message: "Can't get location info. Try again later", actionTitle: "OK")
+                }
                 print(error)
             }
+        }
+    }
+    
+    
+    @IBAction func refresh(sender: AnyObject) {
+        getLoc()
+    }
+    
+    private func removeAllpins() {
+        let annotations = mapView.annotations
+        for annotation in annotations {
+            mapView.removeAnnotation(annotation)
         }
     }
     
@@ -60,7 +78,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel,handler: nil))
                 alertController.addAction(UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
                     performUIUpdatesOnMain{
-                        self.updateLocation = true
+                        UdacityClient.sharedInstance().updateLoaction = true
                         self.performSegueWithIdentifier("AddNew", sender: self)
                     }
                 }))
@@ -75,13 +93,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "AddNew" {
-            let addNewViewController = segue.destinationViewController as! AddNewViewController
-            addNewViewController.updateLoaction = updateLocation
-        }
-        
-    }
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "AddNew" {
+//            let addNewViewController = segue.destinationViewController as! AddNewViewController
+//            addNewViewController.updateLoaction = updateLocation
+//        }
+//        
+//    }
     
     // MARK: Logout
     
@@ -136,12 +154,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     UIApplication.sharedApplication().openURL(requestUrl)
                 } else {
                     
-                    let alertController = UIAlertController(title: "Error", message:
-                        "invalid link", preferredStyle: UIAlertControllerStyle.Alert)
-                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-                    
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    Convenience.alert(self, title: "Error", message: "invalid link", actionTitle: "Dismiss")
                 }
+            } else {
+                Convenience.alert(self, title: "Error", message: "invalid link", actionTitle: "Dismiss")
             }
         }
     }

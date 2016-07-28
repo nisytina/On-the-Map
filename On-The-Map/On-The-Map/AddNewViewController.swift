@@ -11,7 +11,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class AddNewViewController: UIViewController, MKMapViewDelegate {
+class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDelegate {
     
     
     @IBOutlet var backView: UIView!
@@ -27,12 +27,18 @@ class AddNewViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var buttonBackView: UIView!
     
     var coordinates: CLLocationCoordinate2D?
-    var updateLoaction: Bool = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        linkTextView.delegate = self
+        locationTextView.delegate = self
         SubmitButton.hidden = true
         linkTextView.hidden = true
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        textView.text = ""
     }
     
     @IBAction func cancel(sender: AnyObject) {
@@ -62,6 +68,10 @@ class AddNewViewController: UIViewController, MKMapViewDelegate {
     
     private func geocodeLocation(location: String) {
         
+        if location == "" {
+            Convenience.alert(self, title: "Error", message: "Must enter a location", actionTitle: "OK")
+            return
+        }
         let address = location
         let geocoder = CLGeocoder()
         
@@ -90,14 +100,14 @@ class AddNewViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func submit(sender: AnyObject) {
         
-        if (linkTextView.text == "Enter a Link to Share Here" || linkTextView.text == nil) {
+        if (linkTextView.text == "Enter a Link to Share Here" || linkTextView.text == "") {
             Convenience.alert(self, title: "Error", message: "Please enter a link", actionTitle: "enter")
         } else {
             
             let jsonBody: String = "{\"uniqueKey\": \"\(UdacityClient.sharedInstance().UserID!)\", \"firstName\": \"\(UdacityClient.sharedInstance().firstName!)\" , \"lastName\": \"\(UdacityClient.sharedInstance().lastName!)\",\"mapString\": \"\(locationTextView.text)\", \"mediaURL\": \"\(linkTextView.text)\",\"latitude\": \(coordinates!.latitude), \"longitude\": \(coordinates!.longitude)}"
             
             // if it is the first time for a user to add location
-            if updateLoaction == false {
+            if UdacityClient.sharedInstance().updateLoaction == false {
                 
                 ParseClient.sharedInstance().putNewLocation(jsonBody) { (result, error) in
                     if result == true {
@@ -109,7 +119,16 @@ class AddNewViewController: UIViewController, MKMapViewDelegate {
                 }
                 
             } else {
+                //print(jsonBody)
                 // user request to change location
+                ParseClient.sharedInstance().updateLocation(jsonBody) { (result, error) in
+                    if result == true {
+                        UdacityClient.sharedInstance().locationAdded = true
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    } else {
+                        print(error)
+                    }
+                }
                 
             }
             

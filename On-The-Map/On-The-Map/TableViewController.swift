@@ -31,7 +31,10 @@ class TableViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        getLoc()
+    }
+    
+    func getLoc() {
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
                 self.locations = locations
@@ -39,9 +42,16 @@ class TableViewController: UIViewController {
                     self.locationsTableView.reloadData()
                 }
             } else {
+                performUIUpdatesOnMain {
+                    Convenience.alert(self, title: "Error", message: "Can't get location info. Try again later", actionTitle: "OK")
+                }
                 print(error)
             }
         }
+    }
+    
+    @IBAction func refresh(sender: AnyObject) {
+        getLoc()
     }
     
     @IBAction func addNew(sender: AnyObject) {
@@ -117,11 +127,14 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
         let link = location.mediaURL
         
         if let requestUrl = NSURL(string: link) {
-            UIApplication.sharedApplication().openURL(requestUrl)
+            if UIApplication.sharedApplication().canOpenURL(requestUrl) {
+                UIApplication.sharedApplication().openURL(requestUrl)
+            } else {
+                
+                Convenience.alert(self, title: "Error", message: "invalid link", actionTitle: "Dismiss")
+            }
+        } else {
+            Convenience.alert(self, title: "Error", message: "invalid link", actionTitle: "Dismiss")
         }
     }
-    
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 100
-//    }
 }

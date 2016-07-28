@@ -68,6 +68,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="EmailTextfield" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jWu-6H-U6R">
                                 <rect key="frame" x="13" y="231" width="387" height="43"/>
                                 <color key="backgroundColor" red="1" green="0.84595767985034176" blue="0.6910858880777635" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="jWu-6H-U6R" secondAttribute="height" multiplier="380:43" constant="7" id="72d-d1-QaQ"/>
                                 </constraints>
@@ -78,6 +79,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PasswordTextfield" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e4P-tE-AiX">
                                 <rect key="frame" x="13" y="292" width="387" height="42"/>
                                 <color key="backgroundColor" red="0.99607843137254903" green="0.81568627450980391" blue="0.62745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="e4P-tE-AiX" secondAttribute="height" multiplier="190:21" constant="7" id="jGX-lF-ma8"/>
                                 </constraints>
@@ -224,11 +226,14 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="5t9-ya-SuL"/>
+                            <barButtonItem systemItem="refresh" id="5t9-ya-SuL">
+                                <connections>
+                                    <action selector="refresh:" destination="2dn-ba-Hrv" id="xSo-lq-6Go"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="addNew" id="FoS-50-p1z">
                                 <connections>
                                     <action selector="addNew:" destination="2dn-ba-Hrv" id="JwE-If-sB6"/>
-                                    <segue destination="KCw-KQ-SFM" kind="presentation" identifier="AddNew" id="aE2-FS-h8P"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -237,6 +242,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="locationsTableView" destination="Zzh-21-BId" id="f2G-MS-JFA"/>
+                        <segue destination="KCw-KQ-SFM" kind="presentation" identifier="AddNew" id="yOn-hJ-3Yg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylF-M8-X6L" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -265,7 +271,7 @@
                                 <rect key="frame" x="-1" y="57" width="414" height="48"/>
                                 <color key="textColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccC-7o-fRd">
                                 <rect key="frame" x="356" y="20" width="51" height="30"/>
@@ -327,7 +333,7 @@
                                 <color key="backgroundColor" red="0.26153630018234253" green="0.5390625" blue="0.83247692953020136" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="textColor" white="0.88622063758389258" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
@@ -396,11 +402,14 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="ppi-bE-I6f"/>
-                            <barButtonItem title="Item" image="addNew" id="1Ej-J8-OJB">
+                            <barButtonItem systemItem="refresh" id="ppi-bE-I6f">
+                                <connections>
+                                    <action selector="refresh:" destination="2MV-AC-5dl" id="YrZ-cM-Iy1"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="addNew" id="1Ej-J8-OJB">
                                 <connections>
                                     <action selector="addNew:" destination="2MV-AC-5dl" id="c0E-CX-Cgb"/>
-                                    <segue destination="KCw-KQ-SFM" kind="presentation" identifier="AddNew" id="aP1-cn-aqK"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -408,6 +417,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="mapView" destination="nVD-Mv-fQ0" id="D6B-hF-nZH"/>
+                        <segue destination="KCw-KQ-SFM" kind="presentation" identifier="AddNew" id="tcZ-YT-Zjf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bVB-1w-Xgr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -422,6 +432,6 @@
         <image name="map" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aP1-cn-aqK"/>
+        <segue reference="yOn-hJ-3Yg"/>
     </inferredMetricsTieBreakers>
 </document>

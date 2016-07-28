@@ -15,9 +15,13 @@ Complete:
 4. add a new location
 5. logout function
 
-to-do:
 1. connect sign in button
-2. update the user location
 3. MVC logout
-4. UI optimization
 5. refresh button
+4. UI optimization
+
+to-do:
+2. update the user location
+
+
+

@@ -72,12 +72,12 @@ class ParseClient: NSObject {
         return task
     }
     
-    // MARK: POST
+    // MARK: POST and PUT
     
-    func taskForPOSTMethod(method: String, parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOST: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    func taskForPOSTandPUTMethod(httpMethod: String, method: String, parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOSTandPUT: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
         let request = NSMutableURLRequest(URL: tmdbURLFromParameters(parameters, withPathExtension: method))
-        request.HTTPMethod = "POST"
+        request.HTTPMethod = httpMethod
         request.addValue(ParseAPIValue.Parse_Application_ID, forHTTPHeaderField: ParseAPIKey.Parse_Application_ID)
         request.addValue(ParseAPIValue.REST_API_Key, forHTTPHeaderField: ParseAPIKey.REST_API_Key)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -89,7 +89,7 @@ class ParseClient: NSObject {
             func sendError(error: String) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPOST(result: nil, error: NSError(domain: "taskForPOSTMethod", code: 1, userInfo: userInfo))
+                completionHandlerForPOSTandPUT(result: nil, error: NSError(domain: "taskForPOSTandPUTMethod", code: 1, userInfo: userInfo))
             }
             
             /* GUARD: Was there an error? */
@@ -99,18 +99,19 @@ class ParseClient: NSObject {
             }
             
             /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
-                return
-            }
+//            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+//                sendError("Your request returned a status code other than 2xx!")
+//                return
+//            }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
                 sendError("No data was returned by the request!")
                 return
             }
+            //print(data)
             /* 5/6. Parse the data and use the data (happens in completion handler) */
-            Convenience.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
+            Convenience.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOSTandPUT)
             //print(NSString(data: data, encoding: NSUTF8StringEncoding))
         }
         task.resume()

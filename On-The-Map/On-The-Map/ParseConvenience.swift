@@ -16,7 +16,8 @@ extension ParseClient {
     func getStudentLocations(completionHandlerForStdLocations: (result: [studentLocation]?, error: NSError?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
-        let parameters = [ParseClient.ParameterKey.limit: 100]
+        var parameters : [String:AnyObject] = [ParseClient.ParameterKey.limit: 100]
+        parameters[ParseClient.ParameterKey.order] = "-" + ParseClient.JSONResponseKeys.StudentLocationUpdatedAt
         let mutableMethod: String = ParseClient.ParseMethods.studentLocation
         
         /* 2. Make the request */
@@ -44,9 +45,6 @@ extension ParseClient {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         
-//        "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}"
-        
-        
 //        let jsonData = ["uniqueKey":"\(UdacityClient.sharedInstance().UserID!)"]
         let parameters = [ParseClient.ParameterKey.query: "{\"uniqueKey\":\"\(UdacityClient.sharedInstance().UserID!)\"}"]
         let mutableMethod: String = ParseClient.ParseMethods.studentLocation
@@ -58,7 +56,8 @@ extension ParseClient {
             if let error = error {
                 completionHandlerForUserStdLocations(result: nil, error: error)
             } else {
-                if let _ = results[ParseClient.JSONResponseKeys.result] as? [[String:AnyObject]] {
+                if let result = results[ParseClient.JSONResponseKeys.result] as? [[String:AnyObject]] {
+                    UdacityClient.sharedInstance().objectId = result[0][JSONResponseKeys.StudentLocationObjectId] as? String
                     completionHandlerForUserStdLocations(result: true, error: nil)
                 } else {
                     completionHandlerForUserStdLocations(result: nil, error: NSError(domain: "getUserStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getUserStudentLocations"]))
@@ -66,6 +65,31 @@ extension ParseClient {
             }
         }
         
+    }
+    
+    func updateLocation(jsonBody: String, completionHandlerForupdateLocation: (result: Bool, error: NSError?) -> Void) {
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let parameters = ["":""]
+        let mutableMethod: String = ParseClient.ParseMethods.studentLocation + "/<objectId>"
+        let finalMethod = Convenience.subtituteKeyInMethod(mutableMethod, key: "objectId", value: UdacityClient.sharedInstance().objectId!)!
+        let jsonBody = jsonBody
+        
+        /* 2. Make the request */
+        taskForPOSTandPUTMethod("PUT", method: finalMethod, parameters: parameters, jsonBody: jsonBody) { (result, error) in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandlerForupdateLocation(result: false, error: error)
+            } else {
+                
+                if let _ = result[ParseClient.JSONResponseKeys.StudentLocationUpdatedAt] as? String {
+                    completionHandlerForupdateLocation(result: true, error: nil)
+                } else {
+                    completionHandlerForupdateLocation(result: false, error: NSError(domain: "updateLocation parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse updateLocation"]))
+                }
+            }
+        }
     }
     
     func putNewLocation(jsonBody: String, completionHandlerForNewLocation: (result: Bool, error: NSError?) -> Void) {
@@ -76,14 +100,15 @@ extension ParseClient {
         let jsonBody = jsonBody
         
         /* 2. Make the request */
-        taskForPOSTMethod(mutableMethod, parameters: parameters, jsonBody: jsonBody) { (result, error) in
+        taskForPOSTandPUTMethod("POST", method: mutableMethod, parameters: parameters, jsonBody: jsonBody) { (result, error) in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
                 completionHandlerForNewLocation(result: false, error: error)
             } else {
                 
-                if let _ = result[ParseClient.JSONResponseKeys.StudentLocationObjectId] as? String {
+                if let objectId = result[ParseClient.JSONResponseKeys.StudentLocationObjectId] as? String {
+                    UdacityClient.sharedInstance().objectId = objectId
                     completionHandlerForNewLocation(result: true, error: nil)
                 } else {
                     completionHandlerForNewLocation(result: false, error: NSError(domain: "putNewLocation parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse putNewLocation"]))
