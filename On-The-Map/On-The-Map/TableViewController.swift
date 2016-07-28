@@ -13,34 +13,56 @@ class TableViewController: UIViewController {
     //MARK: Properties
     
     var locations: [studentLocation] = [studentLocation]()
-    
+
     //MARK: Outlets
-    
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var locationsTableView: UITableView!
+    @IBOutlet weak var backView: UIView!
     
     //MARK: Life cycle
-    func viewDidload() {
+    override func viewDidLoad() {
         super.viewDidLoad()
-        
+        getLoc()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        locationsTableView.reloadData()
+        self.locationsTableView.reloadData()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        getLoc()
     }
     
     func getLoc() {
+        var overlay : UIView? // This should be a class variable
+        overlay = UIView(frame: view.frame)
+        overlay!.backgroundColor = UIColor.blackColor()
+        overlay!.alpha = 0.4
+        view.addSubview(overlay!)
+        
+        activityIndicatorView.hidden = false
+        backView.hidden = false
+        let seconds = 2.0
+        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        
+        activityIndicatorView.startAnimating()
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
                 self.locations = locations
                 performUIUpdatesOnMain {
-                    self.locationsTableView.reloadData()
+                    
+                    dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                        
+                        self.locationsTableView.reloadData()
+                        self.activityIndicatorView.stopAnimating()
+                        self.activityIndicatorView.hidden = true
+                        self.backView.hidden = true
+                        overlay?.removeFromSuperview()
+                    })
                 }
+            
             } else {
                 performUIUpdatesOnMain {
                     Convenience.alert(self, title: "Error", message: "Can't get location info. Try again later", actionTitle: "OK")

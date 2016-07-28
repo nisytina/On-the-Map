@@ -19,27 +19,43 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     //@IBOutlet weak var logOut: UIBarButtonItem!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.delegate = self;
+        activityIndicatorView.hidden = true
+        getLoc()
         //print(message)
     }
         
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        getLoc()
+        
     }
     
     func getLoc() {
+        var overlay : UIView? // This should be a class variable
+        overlay = UIView(frame: view.frame)
+        overlay!.backgroundColor = UIColor.blackColor()
+        overlay!.alpha = 0.6
+        view.addSubview(overlay!)
+        let seconds = 2.0
+        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        activityIndicatorView.startAnimating()
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
                 self.locations = locations
-                
                 performUIUpdatesOnMain {
+                    dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                    
                     self.removeAllpins()
                     self.displayStudentLocations(locations)
+                    self.activityIndicatorView.stopAnimating()
+                    overlay?.removeFromSuperview()
+                    })
                 }
             } else {
                 performUIUpdatesOnMain {
