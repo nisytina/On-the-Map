@@ -24,7 +24,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.delegate = self;
-        activityIndicatorView.hidden = true
+        //activityIndicatorView.hidden = true
         getLoc()
         //print(message)
     }
@@ -39,7 +39,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         var overlay : UIView? // This should be a class variable
         overlay = UIView(frame: view.frame)
         overlay!.backgroundColor = UIColor.blackColor()
-        overlay!.alpha = 0.6
+        overlay!.alpha = 0.4
         view.addSubview(overlay!)
         let seconds = 2.0
         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
@@ -108,14 +108,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "AddNew" {
-//            let addNewViewController = segue.destinationViewController as! AddNewViewController
-//            addNewViewController.updateLoaction = updateLocation
-//        }
-//        
-//    }
     
     // MARK: Logout
     

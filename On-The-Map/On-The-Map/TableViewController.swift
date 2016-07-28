@@ -41,12 +41,11 @@ class TableViewController: UIViewController {
         overlay!.alpha = 0.4
         view.addSubview(overlay!)
         
-        activityIndicatorView.hidden = false
-        backView.hidden = false
+        self.backView.hidden = false
+        self.activityIndicatorView.hidden = false
         let seconds = 2.0
         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        
         activityIndicatorView.startAnimating()
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
@@ -57,7 +56,6 @@ class TableViewController: UIViewController {
                         
                         self.locationsTableView.reloadData()
                         self.activityIndicatorView.stopAnimating()
-                        self.activityIndicatorView.hidden = true
                         self.backView.hidden = true
                         overlay?.removeFromSuperview()
                     })

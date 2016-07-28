@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var Login: UIButton!
     @IBOutlet weak var SignUp: UIButton!
     @IBOutlet weak var errorMessage: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -57,7 +58,7 @@ class LoginViewController: UIViewController {
             if let error = error {
                 print(error)
                 return
-            } else {
+            } else{
                 UdacityClient.sharedInstance().SessionID = SessionResults[UdacityJSONResponseKeys.SessionID]
                 UdacityClient.sharedInstance().UserID = SessionResults[UdacityJSONResponseKeys.UserID
                 ]
@@ -70,7 +71,8 @@ class LoginViewController: UIViewController {
                         if result as? Bool == true  {
                             //load map view
                             performUIUpdatesOnMain{
-                                self.performSegueWithIdentifier("Map", sender: self)
+                                    self.performSegueWithIdentifier("Map", sender: self)
+                                
                             }
                         }
                     }

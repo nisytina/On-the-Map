@@ -25,6 +25,7 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
     @IBOutlet weak var locationLabel3: UILabel!
     @IBOutlet weak var locationTextView: UITextView!
     @IBOutlet weak var buttonBackView: UIView!
+    @IBOutlet weak var loading: UIActivityIndicatorView!
     
     var coordinates: CLLocationCoordinate2D?
     
@@ -35,6 +36,12 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
         locationTextView.delegate = self
         SubmitButton.hidden = true
         linkTextView.hidden = true
+        loading.hidden = true
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        loading.stopAnimating()
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
@@ -62,6 +69,8 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
     @IBAction func findLocation(sender: AnyObject) {
         
         //geocode the location string pin that location on map
+        loading.hidden = false
+        loading.startAnimating()
         geocodeLocation(locationTextView.text)
         
     }
@@ -80,6 +89,7 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
                 Convenience.alert(self, title: "Error", message: "Can't geocode the location", actionTitle: "Try again")
                 print("Error", error)
             }
+            
             if let placemark = placemarks?.first {
                 self.changeView()
                 self.coordinates = placemark.location!.coordinate
@@ -92,47 +102,56 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
                 // now move the map
                 let region = MKCoordinateRegion(center: dropPin.coordinate, span: span)
                 self.mapView.setRegion(region, animated: true)
+                self.loading.stopAnimating()
             }
         })
     }
     
     
-    
     @IBAction func submit(sender: AnyObject) {
         
-        if (linkTextView.text == "Enter a Link to Share Here" || linkTextView.text == "") {
+        if (linkTextView.text  == "Enter a Link to Share Here" || linkTextView.text  == "") {
             Convenience.alert(self, title: "Error", message: "Please enter a link", actionTitle: "enter")
-        } else {
-            
-            let jsonBody: String = "{\"uniqueKey\": \"\(UdacityClient.sharedInstance().UserID!)\", \"firstName\": \"\(UdacityClient.sharedInstance().firstName!)\" , \"lastName\": \"\(UdacityClient.sharedInstance().lastName!)\",\"mapString\": \"\(locationTextView.text)\", \"mediaURL\": \"\(linkTextView.text)\",\"latitude\": \(coordinates!.latitude), \"longitude\": \(coordinates!.longitude)}"
-            
-            // if it is the first time for a user to add location
-            if UdacityClient.sharedInstance().updateLoaction == false {
-                
-                ParseClient.sharedInstance().putNewLocation(jsonBody) { (result, error) in
-                    if result == true {
-                        UdacityClient.sharedInstance().locationAdded = true
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    } else {
-                        print(error)
-                    }
-                }
-                
-            } else {
-                //print(jsonBody)
-                // user request to change location
-                ParseClient.sharedInstance().updateLocation(jsonBody) { (result, error) in
-                    if result == true {
-                        UdacityClient.sharedInstance().locationAdded = true
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    } else {
-                        print(error)
-                    }
-                }
-                
+            return
+        }
+        let linkString = "https://" + linkTextView.text
+        if let validURL: NSURL = NSURL(string: linkString) {
+            // Successfully constructed an NSURL; open it
+            if !UIApplication.sharedApplication().canOpenURL(validURL) {
+                Convenience.alert(self, title: "Error", message: "invalid link", actionTitle: "Try again")
+                return
             }
+        } else {
+            Convenience.alert(self, title: "Error", message: "invalid link", actionTitle: "Try again")
+            return
+        }
             
+        let jsonBody: String = "{\"uniqueKey\": \"\(UdacityClient.sharedInstance().UserID!)\", \"firstName\": \"\(UdacityClient.sharedInstance().firstName!)\" , \"lastName\": \"\(UdacityClient.sharedInstance().lastName!)\",\"mapString\": \"\(locationTextView.text)\", \"mediaURL\": \"\(linkTextView.text)\",\"latitude\": \(coordinates!.latitude), \"longitude\": \(coordinates!.longitude)}"
+        
+        // if it is the first time for a user to add location
+        if UdacityClient.sharedInstance().updateLoaction == false {
             
+            ParseClient.sharedInstance().putNewLocation(jsonBody) { (result, error) in
+                if result == true {
+                    UdacityClient.sharedInstance().locationAdded = true
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    Convenience.alert(self, title: "Error", message: "Can't add new location info to database", actionTitle: "Try again")
+                    print(error)
+                }
+            }
+        } else {
+            //print(jsonBody)
+            // user request to change location
+            ParseClient.sharedInstance().updateLocation(jsonBody) { (result, error) in
+                if result == true {
+                    UdacityClient.sharedInstance().locationAdded = true
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    Convenience.alert(self, title: "Error", message: "Can't update location info to database", actionTitle: "Try again")
+                    print(error)
+                }
+            }
         }
     }
 }
