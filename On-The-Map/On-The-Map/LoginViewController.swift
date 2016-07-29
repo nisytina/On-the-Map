@@ -9,27 +9,18 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    
-    //var appDelegate: AppDelegate!
 
     @IBOutlet weak var EmailTextfield: UITextField!
     @IBOutlet weak var PasswordTextfield: UITextField!
     @IBOutlet weak var Login: UIButton!
     @IBOutlet weak var SignUp: UIButton!
-    @IBOutlet weak var errorMessage: UILabel!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         EmailTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
         PasswordTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
-        errorMessage.text = ""
         loading.stopAnimating()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-//        unsubscribeFromAllNotifications()
     }
     
     override func shouldAutorotate() -> Bool {
@@ -41,14 +32,14 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func login() {
-        loading.startAnimating()
+        
         // hide keyborad before login
         UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, forEvent:nil)
         
         guard let email = EmailTextfield.text where EmailTextfield.text != ""
          else {
             performUIUpdatesOnMain{
-                self.errorMessage.text = "Email can't be empty"
+                Convenience.alert(self, title: "Error", message: "Email can't be empty", actionTitle: "Dismiss")
             }
             return
         }
@@ -56,26 +47,31 @@ class LoginViewController: UIViewController {
         guard let password = PasswordTextfield.text where PasswordTextfield.text != ""
             else {
                 performUIUpdatesOnMain{
-                    self.errorMessage.text = "Password can't be empty"
+                    Convenience.alert(self, title: "Error", message: "Password can't be empty", actionTitle: "Dismiss")
                 }
                 return
         }
-        self.errorMessage.text = ""
-        
-        UdacityClient.sharedInstance().createSession(email, password: password, errorMessage: errorMessage) {
+        loading.startAnimating()
+        UdacityClient.sharedInstance().createSession(email, password: password) {
             (SessionResults, error) in
             
             if let error = error {
+                if error.code == 2 {
+                    print(error.domain)
+                    performUIUpdatesOnMain {
+                        self.loading.stopAnimating()
+                        Convenience.alert(self, title: "Error", message: error.domain, actionTitle: "Try again")
+                    }
+                }
                 print(error)
-                return
             } else{
                 UdacityClient.sharedInstance().SessionID = SessionResults[UdacityJSONResponseKeys.SessionID]
                 UdacityClient.sharedInstance().UserID = SessionResults[UdacityJSONResponseKeys.UserID
                 ]
-                
                 UdacityClient.sharedInstance().getUserInfo {
                     (result, error) in
                     if let error = error {
+                        self.loading.stopAnimating()
                         print(error)
                     } else {
                         if result as? Bool == true  {
@@ -104,9 +100,7 @@ class LoginViewController: UIViewController {
             let destinationViewController = nav.topViewController as! MapViewController
             destinationViewController.message = "segue"
         }
-        
     }
-
 }
 
 extension LoginViewController: UITextFieldDelegate {
@@ -117,11 +111,4 @@ extension LoginViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
-//    private func resignIfFirstResponder(textField: UITextField) {
-//        if textField.isFirstResponder() {
-//            textField.resignFirstResponder()
-//        }
-//    }
-
 }

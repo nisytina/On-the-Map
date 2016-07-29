@@ -22,12 +22,16 @@ class TableViewController: UIViewController {
     //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        getLoc()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.locationsTableView.reloadData()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+         getLoc()
     }
 
     override func shouldAutorotate() -> Bool {
@@ -47,7 +51,7 @@ class TableViewController: UIViewController {
         
         self.backView.hidden = false
         self.activityIndicatorView.hidden = false
-        let seconds = 2.0
+        let seconds = 1.5
         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         activityIndicatorView.startAnimating()

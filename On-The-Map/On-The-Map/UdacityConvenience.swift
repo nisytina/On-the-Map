@@ -11,8 +11,9 @@ import UIKit
 
 extension UdacityClient {
     
-    func createSession(email: String, password: String, errorMessage: UILabel, completionHandlerForCrSession: (result: [String:String], error: NSError?) -> Void) {
+    func createSession(email: String, password: String, completionHandlerForCrSession: (result: [String: String], error: NSError?) -> Void) {
         let mutableMethod: String = UdacityMethods.Session
+        var errorMessage: String = ""
         
         let jsonBody: String = "{\"udacity\": {\"\(UdacityJSONBodyKeys.Username)\": \"\(email)\", \"\(UdacityJSONBodyKeys.Password)\": \"\(password)\"}}"
         taskForPOSTMethod(mutableMethod, jsonBody: jsonBody) {(result, error) in
@@ -24,12 +25,12 @@ extension UdacityClient {
                 /* GUARD: Did Udacity return an error? */
                 if let _ = result[UdacityJSONResponseKeys.StatusCode] as? Int {
                     performUIUpdatesOnMain {
-                        if let error = result[UdacityJSONResponseKeys.StatusMessage]! {
-                            errorMessage.text =
-                                error as? String
+                        if let error = result[UdacityJSONResponseKeys.StatusMessage]!{
+                            errorMessage = error as! String
+                            print(errorMessage)
+                            completionHandlerForCrSession(result: ["":""], error: NSError(domain: errorMessage, code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not auth to login"]))
                         }
                     }
-                    return
                 }
                 
                 if let account = result[UdacityJSONResponseKeys.Account] as? [String:AnyObject] {

@@ -18,20 +18,16 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     var message: String! = nil
     
     @IBOutlet weak var mapView: MKMapView!
-    //@IBOutlet weak var logOut: UIBarButtonItem!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.delegate = self;
-        //activityIndicatorView.hidden = true
-        getLoc()
-        //print(message)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        getLoc()
     }
     
     override func shouldAutorotate() -> Bool {
@@ -43,12 +39,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func getLoc() {
-        var overlay : UIView? // This should be a class variable
+        var overlay : UIView? 
         overlay = UIView(frame: view.frame)
         overlay!.backgroundColor = UIColor.blackColor()
         overlay!.alpha = 0.4
         view.addSubview(overlay!)
-        let seconds = 2.0
+        let seconds = 1.5
         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         activityIndicatorView.startAnimating()
