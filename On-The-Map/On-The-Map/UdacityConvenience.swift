@@ -31,6 +31,7 @@ extension UdacityClient {
                             completionHandlerForCrSession(result: ["":""], error: NSError(domain: errorMessage, code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not auth to login"]))
                         }
                     }
+                    return
                 }
                 
                 if let account = result[UdacityJSONResponseKeys.Account] as? [String:AnyObject] {

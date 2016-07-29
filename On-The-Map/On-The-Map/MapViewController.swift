@@ -10,12 +10,12 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
-    
-    var appDelegate: AppDelegate!
 
     //MARK: Properties
-    var locations: [studentLocation] = [studentLocation]()
+   
     var message: String! = nil
+    //loading overlay
+    var overlay : UIView?
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
@@ -39,7 +39,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func getLoc() {
-        var overlay : UIView? 
+        
         overlay = UIView(frame: view.frame)
         overlay!.backgroundColor = UIColor.blackColor()
         overlay!.alpha = 0.4
@@ -50,18 +50,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         activityIndicatorView.startAnimating()
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
-                self.locations = locations
+                ParseClient.sharedInstance().locations = locations
                 performUIUpdatesOnMain {
                     dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                     
                     self.removeAllpins()
-                    self.displayStudentLocations(locations)
+                    self.displayStudentLocations(ParseClient.sharedInstance().locations)
                     self.activityIndicatorView.stopAnimating()
-                    overlay?.removeFromSuperview()
+                    self.overlay?.removeFromSuperview()
                     })
                 }
             } else {
                 performUIUpdatesOnMain {
+                    self.activityIndicatorView.stopAnimating()
+                    self.overlay?.removeFromSuperview()
                     Convenience.alert(self, title: "Error", message: "Can't get location info. Try again later", actionTitle: "OK")
                 }
                 print(error)
@@ -86,6 +88,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         ParseClient.sharedInstance().getUserStudentLocation { (result, error) in
             
             if let error = error {
+                performUIUpdatesOnMain {
+                    var errorMessage: String
+                    if error.code == -1009 {
+                        errorMessage = "connection fails. Can't add new location now. Try again later."
+                    } else {
+                        errorMessage = error.domain
+                    }
+                    Convenience.alert(self, title: "Error", message: errorMessage, actionTitle: "Dismiss")
+                }
                 print(error)
                 return
             }
@@ -118,7 +129,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         UdacityClient.sharedInstance().destroySession {(result, error) in
             if let error = error {
                 print(error)
-                Convenience.alert(self, title: "Error", message: "Can't logout. Try again later", actionTitle: "Dismiss")
+                performUIUpdatesOnMain {
+                    Convenience.alert(self, title: "Error", message: "Can't logout. Try again later", actionTitle: "Dismiss")
+                }
             } else {
                 if let _ = result {
                     performUIUpdatesOnMain {
@@ -129,7 +142,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
 
-    func displayStudentLocations(results: [studentLocation]) {
+    func displayStudentLocations(results: [StudentLocation]) {
         
         for result in results {
             let location = CLLocationCoordinate2DMake(result.latitude, result.longitude)

@@ -10,16 +10,16 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
-    @IBOutlet weak var EmailTextfield: UITextField!
-    @IBOutlet weak var PasswordTextfield: UITextField!
-    @IBOutlet weak var Login: UIButton!
-    @IBOutlet weak var SignUp: UIButton!
+    @IBOutlet weak var emailTextfield: UITextField!
+    @IBOutlet weak var passwordTextfield: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        EmailTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
-        PasswordTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
+        emailTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
+        passwordTextfield.layer.sublayerTransform = CATransform3DMakeTranslation(15, 0, 0)
         loading.stopAnimating()
     }
     
@@ -36,7 +36,7 @@ class LoginViewController: UIViewController {
         // hide keyborad before login
         UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, forEvent:nil)
         
-        guard let email = EmailTextfield.text where EmailTextfield.text != ""
+        guard let email = emailTextfield.text where emailTextfield.text != ""
          else {
             performUIUpdatesOnMain{
                 Convenience.alert(self, title: "Error", message: "Email can't be empty", actionTitle: "Dismiss")
@@ -44,7 +44,7 @@ class LoginViewController: UIViewController {
             return
         }
         
-        guard let password = PasswordTextfield.text where PasswordTextfield.text != ""
+        guard let password = passwordTextfield.text where passwordTextfield.text != ""
             else {
                 performUIUpdatesOnMain{
                     Convenience.alert(self, title: "Error", message: "Password can't be empty", actionTitle: "Dismiss")
@@ -56,14 +56,19 @@ class LoginViewController: UIViewController {
             (SessionResults, error) in
             
             if let error = error {
+                var message: String
                 if error.code == 2 {
-                    print(error.domain)
-                    performUIUpdatesOnMain {
-                        self.loading.stopAnimating()
-                        Convenience.alert(self, title: "Error", message: error.domain, actionTitle: "Try again")
-                    }
+                    message = error.domain
+                } else if error.code == -1009 {
+                    message = "connection fails"
+                } else {
+                    message = error.domain
                 }
                 print(error)
+                performUIUpdatesOnMain {
+                    self.loading.stopAnimating()
+                    Convenience.alert(self, title: "Error", message: message, actionTitle: "Try again")
+                }
             } else{
                 UdacityClient.sharedInstance().SessionID = SessionResults[UdacityJSONResponseKeys.SessionID]
                 UdacityClient.sharedInstance().UserID = SessionResults[UdacityJSONResponseKeys.UserID

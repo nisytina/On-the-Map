@@ -12,7 +12,7 @@ class ParseClient: NSObject {
     
     // shared session
     var session = NSURLSession.sharedSession()
-    
+    var locations: [StudentLocation] = [StudentLocation]()
     // MARK: Initializers
     
     override init() {
@@ -39,27 +39,28 @@ class ParseClient: NSObject {
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
-            func sendError(error: String) {
+            func sendError(error: String, code: Int) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForGET(result: nil, error: NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                completionHandlerForGET(result: nil, error: NSError(domain: "taskForGETMethod", code: code, userInfo: userInfo))
             }
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error)")
+                let code = error?.code
+                sendError("There was an error with your request: \(error)", code: code!)
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
+                sendError("Your request returned a status code other than 2xx!", code: 1)
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                sendError("No data was returned by the request!")
+                sendError("No data was returned by the request!", code: 1)
                 return
             }
             
@@ -86,7 +87,7 @@ class ParseClient: NSObject {
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
-            func sendError(error: String) {
+            func sendError(error: String, code: Int) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
                 completionHandlerForPOSTandPUT(result: nil, error: NSError(domain: "taskForPOSTandPUTMethod", code: 1, userInfo: userInfo))
@@ -94,19 +95,14 @@ class ParseClient: NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error)")
+                let code = error?.code
+                sendError("There was an error with your request: \(error)", code: code!)
                 return
             }
             
-            /* GUARD: Did we get a successful 2XX response? */
-//            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-//                sendError("Your request returned a status code other than 2xx!")
-//                return
-//            }
-            
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                sendError("No data was returned by the request!")
+                sendError("No data was returned by the request!", code: 1)
                 return
             }
             //print(data)
@@ -130,8 +126,6 @@ class ParseClient: NSObject {
         components.path = ParseConstants.ApiPath + (withPathExtension ?? "")
         
         URLString = URLString + components.scheme! + "://" + components.host! + components.path! + "?"
-        
-        //components.queryItems = [NSURLQueryItem]()
         
         for (key, value) in parameters {
         

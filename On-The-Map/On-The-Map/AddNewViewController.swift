@@ -155,7 +155,9 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
                     UdacityClient.sharedInstance().locationAdded = true
                     self.dismissViewControllerAnimated(true, completion: nil)
                 } else {
-                    Convenience.alert(self, title: "Error", message: "Can't add new location info to database", actionTitle: "Try again")
+                    performUIUpdatesOnMain {
+                        Convenience.alert(self, title: "Error", message: "Can't add new location info to database", actionTitle: "Try again")
+                    }
                     print(error)
                 }
             }
@@ -167,7 +169,9 @@ class AddNewViewController: UIViewController, MKMapViewDelegate, UITextViewDeleg
                     UdacityClient.sharedInstance().locationAdded = true
                     self.dismissViewControllerAnimated(true, completion: nil)
                 } else {
-                    Convenience.alert(self, title: "Error", message: "Can't update location info to database", actionTitle: "Try again")
+                    performUIUpdatesOnMain {
+                        Convenience.alert(self, title: "Error", message: "Can't update location info to database", actionTitle: "Try again")
+                    }
                     print(error)
                 }
             }

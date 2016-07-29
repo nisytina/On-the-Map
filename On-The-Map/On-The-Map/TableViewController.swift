@@ -11,9 +11,7 @@ import UIKit
 class TableViewController: UIViewController {
     
     //MARK: Properties
-    
-    var locations: [studentLocation] = [studentLocation]()
-
+    var overlay : UIView?
     //MARK: Outlets
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var locationsTableView: UITableView!
@@ -43,7 +41,6 @@ class TableViewController: UIViewController {
     }
     
     func getLoc() {
-        var overlay : UIView? // This should be a class variable
         overlay = UIView(frame: view.frame)
         overlay!.backgroundColor = UIColor.blackColor()
         overlay!.alpha = 0.4
@@ -57,7 +54,7 @@ class TableViewController: UIViewController {
         activityIndicatorView.startAnimating()
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
-                self.locations = locations
+                ParseClient.sharedInstance().locations = locations
                 performUIUpdatesOnMain {
                     
                     dispatch_after(dispatchTime, dispatch_get_main_queue(), {
@@ -65,12 +62,14 @@ class TableViewController: UIViewController {
                         self.locationsTableView.reloadData()
                         self.activityIndicatorView.stopAnimating()
                         self.backView.hidden = true
-                        overlay?.removeFromSuperview()
+                        self.overlay?.removeFromSuperview()
                     })
                 }
             
             } else {
                 performUIUpdatesOnMain {
+                    self.activityIndicatorView.stopAnimating()
+                    self.overlay?.removeFromSuperview()
                     Convenience.alert(self, title: "Error", message: "Can't get location info. Try again later", actionTitle: "OK")
                 }
                 print(error)
@@ -87,6 +86,15 @@ class TableViewController: UIViewController {
         ParseClient.sharedInstance().getUserStudentLocation { (result, error) in
             
             if let error = error {
+                performUIUpdatesOnMain {
+                    var errorMessage: String
+                    if error.code == -1009 {
+                        errorMessage = "connection fails. Can't add new location now. Try again later."
+                    } else {
+                        errorMessage = error.domain
+                    }
+                    Convenience.alert(self, title: "Error", message: errorMessage, actionTitle: "Dismiss")
+                }
                 print(error)
                 return
             }
@@ -117,7 +125,9 @@ class TableViewController: UIViewController {
         UdacityClient.sharedInstance().destroySession {(result, error) in
             if let error = error {
                 print(error)
-                Convenience.alert(self, title: "Error", message: "Can't logout. Try again later", actionTitle: "Dismiss")
+                performUIUpdatesOnMain {
+                    Convenience.alert(self, title: "Error", message: "Can't logout. Try again later", actionTitle: "Dismiss")
+                }
             } else {
                 if let _ = result {
                     performUIUpdatesOnMain {
@@ -136,7 +146,7 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
         
         /* Get cell type */
         let cellReuseIdentifier = "TableViewCell"
-        let location = locations[indexPath.row]
+        let location = ParseClient.sharedInstance().locations[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier) as! LocationCell!
         
         /* Set cell defaults */
@@ -146,12 +156,12 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations.count
+        return ParseClient.sharedInstance().locations.count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let location = locations[indexPath.row]
+        let location = ParseClient.sharedInstance().locations[indexPath.row]
         let link = location.mediaURL
         
         if let requestUrl = NSURL(string: link) {

@@ -39,19 +39,20 @@ class UdacityClient: NSObject {
         let request = NSMutableURLRequest(URL: tmdbURLFromParameters(method))
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { data, response, error in
-            func sendError(error: String) {
+            func sendError(error: String, code: Int) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForGET(result: nil, error: NSError(domain: "taskForPOSTMethod", code: 1, userInfo: userInfo))
+                completionHandlerForGET(result: nil, error: NSError(domain: "taskForPOSTMethod", code: code, userInfo: userInfo))
             }
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error)")
+                let code = error?.code
+                sendError("There was an error with your request: \(error)", code: code!)
                 return
             }
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                sendError("No data was returned by the request!")
+                sendError("No data was returned by the request!", code: 1)
                 return
             }
             let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) /* subset response data! */
@@ -63,9 +64,7 @@ class UdacityClient: NSObject {
         
         /* 7. Start the request */
         task.resume()
-        
         return task
-        
     }
     
     // MARK: POST
@@ -83,21 +82,21 @@ class UdacityClient: NSObject {
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
-            func sendError(error: String) {
-                print(error)
+            func sendError(error: String, code: Int) {
+                //print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPOST(result: nil, error: NSError(domain: "taskForPOSTMethod", code: 1, userInfo: userInfo))
+                completionHandlerForPOST(result: nil, error: NSError(domain: "taskForPOSTMethod", code: code, userInfo: userInfo))
             }
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error)")
+                sendError("There was an error with your request: \(error)", code: error!.code)
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                sendError("No data was returned by the request!")
+                sendError("No data was returned by the request!", code: error!.code)
                 return
             }
             

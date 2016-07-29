@@ -13,7 +13,7 @@ extension ParseClient {
     
     // MARK: GET Convenience Methods
     
-    func getStudentLocations(completionHandlerForStdLocations: (result: [studentLocation]?, error: NSError?) -> Void) {
+    func getStudentLocations(completionHandlerForStdLocations: (result: [StudentLocation]?, error: NSError?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         var parameters : [String:AnyObject] = [ParseClient.ParameterKey.limit: 100]
@@ -30,7 +30,7 @@ extension ParseClient {
                 
                 if let results = results[ParseClient.JSONResponseKeys.result] as? [[String:AnyObject]] {
                     
-                    let locations = studentLocation.locationsFromResults(results)
+                    let locations = StudentLocation.locationsFromResults(results)
                     completionHandlerForStdLocations(result: locations, error: nil)
                 } else {
                     completionHandlerForStdLocations(result: nil, error: NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))

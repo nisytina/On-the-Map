@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct studentLocation {
+struct StudentLocation {
     
     
     // MARK: Properties
@@ -40,13 +40,13 @@ struct studentLocation {
     }
 
     
-    static func locationsFromResults(results: [[String:AnyObject]]) -> [studentLocation] {
+    static func locationsFromResults(results: [[String:AnyObject]]) -> [StudentLocation] {
         
-        var locations = [studentLocation]()
+        var locations = [StudentLocation]()
         
         // iterate through array of dictionaries, each  is a dictionary
         for result in results {
-            locations.append(studentLocation(dictionary: result))
+            locations.append(StudentLocation(dictionary: result))
         }
         
         return locations
