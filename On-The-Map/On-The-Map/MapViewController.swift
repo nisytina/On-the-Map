@@ -50,12 +50,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         activityIndicatorView.startAnimating()
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
-                ParseClient.sharedInstance().locations = locations
+               StudentLocation.locations = locations
                 performUIUpdatesOnMain {
                     dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                     
                     self.removeAllpins()
-                    self.displayStudentLocations(ParseClient.sharedInstance().locations)
+                    self.displayStudentLocations(StudentLocation.locations)
                     self.activityIndicatorView.stopAnimating()
                     self.overlay?.removeFromSuperview()
                     })

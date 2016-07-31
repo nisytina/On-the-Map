@@ -54,7 +54,7 @@ class TableViewController: UIViewController {
         activityIndicatorView.startAnimating()
         ParseClient.sharedInstance().getStudentLocations { (locations, error) in
             if let locations = locations {
-                ParseClient.sharedInstance().locations = locations
+                StudentLocation.locations = locations
                 performUIUpdatesOnMain {
                     
                     dispatch_after(dispatchTime, dispatch_get_main_queue(), {
@@ -146,7 +146,7 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
         
         /* Get cell type */
         let cellReuseIdentifier = "TableViewCell"
-        let location = ParseClient.sharedInstance().locations[indexPath.row]
+        let location = StudentLocation.locations[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier) as! LocationCell!
         
         /* Set cell defaults */
@@ -156,12 +156,12 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ParseClient.sharedInstance().locations.count
+        return StudentLocation.locations.count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let location = ParseClient.sharedInstance().locations[indexPath.row]
+        let location = StudentLocation.locations[indexPath.row]
         let link = location.mediaURL
         
         if let requestUrl = NSURL(string: link) {

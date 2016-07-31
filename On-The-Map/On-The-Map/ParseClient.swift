@@ -12,8 +12,7 @@ class ParseClient: NSObject {
     
     // shared session
     var session = NSURLSession.sharedSession()
-    var locations: [StudentLocation] = [StudentLocation]()
-    // MARK: Initializers
+        // MARK: Initializers
     
     override init() {
         super.init()
