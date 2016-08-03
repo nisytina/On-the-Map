@@ -9,10 +9,11 @@
 extension ParseClient {
     
     struct ParseConstants {
+        // https://parse.udacity.com/parse/classes
         // MARK: URLs
         static let ApiScheme = "https"
-        static let ApiHost = "api.parse.com"
-        static let ApiPath = "/1"
+        static let ApiHost = "parse.udacity.com"
+        static let ApiPath = "/parse"
     }
     
     struct ParseAPIKey {
