@@ -4,7 +4,7 @@ OnTheMap is an app that posts user-generated location information to a shared ma
 **Install**
 
 1. clone this repo and open in Xcode
-2.install and run on simulator or connected iPhone or iPad
+2. install and run on simulator or connected iPhone or iPad
 3. trust this app on your iPhone or iPad
 
 **Features to Add**
