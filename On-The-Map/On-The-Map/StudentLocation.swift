@@ -29,14 +29,46 @@ import Foundation
         // MARK: Initializers
         // construct a student from a dictionary
         init(dictionary: [String:AnyObject]) {
-            objectId = dictionary[ParseClient.JSONResponseKeys.StudentLocationObjectId] as! String
-            uniqueKey = dictionary[ParseClient.JSONResponseKeys.StudentLocationUniqueKey] as! String
-            firstName = dictionary[ParseClient.JSONResponseKeys.StudentLocationFirstName] as! String
-            lastName = dictionary[ParseClient.JSONResponseKeys.StudentLocationLastName] as! String
-            mapString = dictionary[ParseClient.JSONResponseKeys.StudentLocationMapString] as! String
-            mediaURL = dictionary[ParseClient.JSONResponseKeys.StudentLocationMediaURL] as! String
-            latitude = dictionary[ParseClient.JSONResponseKeys.StudentLocationLatitude] as! Float64
-            longitude = dictionary[ParseClient.JSONResponseKeys.StudentLocationLongitude] as! Float64
+            if let id = dictionary[ParseClient.JSONResponseKeys.StudentLocationObjectId] {
+                objectId = id as! String
+            } else {
+                objectId = ""
+            }
+            if let key = dictionary[ParseClient.JSONResponseKeys.StudentLocationUniqueKey] {
+                uniqueKey = key as! String
+            } else {
+                uniqueKey = ""
+            }
+            if let fname = dictionary[ParseClient.JSONResponseKeys.StudentLocationFirstName] {
+                firstName = fname as! String
+            } else {
+                firstName = ""
+            }
+            if let lname = dictionary[ParseClient.JSONResponseKeys.StudentLocationLastName] {
+                lastName = lname as! String
+            } else {
+                lastName = ""
+            }
+            if let mS = dictionary[ParseClient.JSONResponseKeys.StudentLocationMapString] {
+                mapString = mS as! String
+            } else {
+                mapString = ""
+            }
+            if let mU = dictionary[ParseClient.JSONResponseKeys.StudentLocationMediaURL] {
+                mediaURL = mU as! String
+            } else {
+                mediaURL = ""
+            }
+            if let la = dictionary[ParseClient.JSONResponseKeys.StudentLocationLatitude] {
+                latitude = la as! Float64
+            } else {
+                latitude = 0
+            }
+            if let lo = dictionary[ParseClient.JSONResponseKeys.StudentLocationLongitude] {
+                longitude = lo as! Float64
+            } else {
+                longitude = 0
+            }
             createdAt = dictionary[ParseClient.JSONResponseKeys.StudentLocationCreatedAt] as! CFDate
             updatedAt = dictionary[ParseClient.JSONResponseKeys.StudentLocationUpdatedAt] as! CFDate
         }
